@@ -1,0 +1,9 @@
+.App {
+    /* 기본 앱 동작 */
+    max-width: 768px;
+    min-width: 375px;
+    height: 100%;
+    margin: auto;
+    background-color: white;
+  }
+  
