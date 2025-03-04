@@ -9,8 +9,18 @@ function MainPage() {
 
     //카테고리 클릭시에
     const onCatClick = (idx) => {
+        //활성화 카테고리 변경
         setActiveCat(idx);
+
+        //카테고리 중앙으로 이동
+        document.getElementById('category'+idx).scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+            inline: "center",
+          });
     }
+
+
 
     return (
         // 메인페이지
@@ -28,7 +38,7 @@ function MainPage() {
                 <Stack direction="horizontal" gap={3} className='overflow-x-auto text-nowrap p-2'>
                     {menu.categories.map((category, index) => {
                         return (
-                            <div key={category.name} className={`myCategory ${index === activeCat ? 'active' : ''}`} onClick={()=>onCatClick(index)}>{category.categoryName}</div>
+                            <div id={`category${index}`} key={category.name} className={`myCategory ${index === activeCat ? 'active' : ''}`} onClick={()=>onCatClick(index)}>{category.categoryName}</div>
                         );
                     })}
                 </Stack>
