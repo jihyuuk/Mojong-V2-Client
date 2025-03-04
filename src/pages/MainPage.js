@@ -28,7 +28,7 @@ function MainPage() {
                 <Stack direction="horizontal" gap={3} className='overflow-x-auto text-nowrap p-2'>
                     {menu.categories.map((category, index) => {
                         return (
-                            <div key={category.name} className="p-2" onClick={()=>onCatClick(index)}>{category.categoryName}</div>
+                            <div key={category.name} className={`myCategory ${index === activeCat ? 'active' : ''}`} onClick={()=>onCatClick(index)}>{category.categoryName}</div>
                         );
                     })}
                 </Stack>
