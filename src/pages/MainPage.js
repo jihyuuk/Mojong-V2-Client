@@ -1,9 +1,8 @@
 import { Button, ListGroup, Nav } from 'react-bootstrap';
 import React from 'react';
+import menu from "./dummyData.json";
 
 function MainPage() {
-
-    const numbers = Array.from({ length: 10 }, (_, i) => i + 1); // 1~10까지 생성
 
     return (
         // 메인페이지
@@ -19,40 +18,47 @@ function MainPage() {
 
                 {/* 카테고리 */}
                 <div className='overflow-auto p-2'>
-                    <Nav variant="underline" className="d-flex flex-nowrap text-nowrap" defaultActiveKey="link-1">
-                        {numbers.map((num) => (
-                            <Nav.Item key={num}>
-                                <Nav.Link className='custom-nav-link' eventKey={`link-${num}`}>Option {num}</Nav.Link>
-                            </Nav.Item>
-                        ))}
+                <Nav variant="underline" className="d-flex flex-nowrap text-nowrap" defaultActiveKey="link-0">
+                    {menu.categories.map((category, index) => {
+                        return(
+                                <Nav.Item key={index}>
+                                    <Nav.Link className='custom-nav-link' eventKey={`link-${index}`}>{category.categoryName}</Nav.Link>
+                                </Nav.Item>
+                        );
+                    })}
                     </Nav>
                 </div>
             </div>
 
             {/* 콘텐츠 */}
             <div className='flex-grow-1 overflow-y-auto text-start bg-secondary-subtle'>
-                {numbers.map((num) => (
 
-                    <ListGroup className='mb-4 bg-white rounded-0'>
-                        <div className='fs-3 fw-bold p-2 ps-3'>카테고리 {num}</div>
+                {menu.categories.map((category) => {
+                    return (
+                        // 카테고리명
+                        <ListGroup className='mb-4 bg-white rounded-0'>
+                            <div className='fs-3 fw-bold p-2 ps-3'>{category.categoryName}</div>
 
+                            {/* 카테고리 아이템 */}
+                            {category.items.map((item) => {
+                                return (
+                                    <ListGroup.Item className='d-flex gap-3'>
+                                        <div className='p-4 border rounded-4'>
+                                            사진
+                                        </div>
+                                        <div>
+                                            <div className="fw-semibold fs-5">{item.name}</div>
+                                            <div className='mt-1'>{item.description}</div>
+                                            <div className='mt-1'>{item.price}원</div>
+                                        </div>
+                                    </ListGroup.Item>
+                                );
+                            })}
 
-                        {numbers.map((num2) => (
+                        </ListGroup>
+                    );
+                })}
 
-                            <ListGroup.Item className='d-flex gap-3'>
-                                <div className='p-4 border rounded-4'>
-                                    사진
-                                </div>
-                                <div>
-                                    <div className="fw-semibold fs-5">리스트 아이템 {num2}</div>
-                                    <div className='mt-1'>5,000원</div>
-                                </div>
-                            </ListGroup.Item>
-
-                        ))}
-                    </ListGroup>
-
-                ))}
             </div>
 
             {/* 푸터 */}
