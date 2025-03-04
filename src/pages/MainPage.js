@@ -1,8 +1,16 @@
-import { Button, ListGroup, Nav, Stack } from 'react-bootstrap';
-import React from 'react';
+import { Button, ListGroup, Stack } from 'react-bootstrap';
+import React, { useState } from 'react';
 import menu from "./dummyData.json";
 
 function MainPage() {
+
+    //현재 활성화된 카테고리
+    const [activeCat, setActiveCat] = useState(0);
+
+    //카테고리 클릭시에
+    const onCatClick = (idx) => {
+        setActiveCat(idx);
+    }
 
     return (
         // 메인페이지
@@ -20,7 +28,7 @@ function MainPage() {
                 <Stack direction="horizontal" gap={3} className='overflow-x-auto text-nowrap p-2'>
                     {menu.categories.map((category, index) => {
                         return (
-                            <div className="p-2">{category.categoryName}</div>
+                            <div key={category.name} className="p-2" onClick={()=>onCatClick(index)}>{category.categoryName}</div>
                         );
                     })}
                 </Stack>
