@@ -12,29 +12,38 @@ function MainPage() {
         //활성화 카테고리 변경
         setActiveCat(idx);
 
-        //카테고리 중앙으로 이동
+        moveCategory(idx);
+        moveSection(idx);
+    }
+
+    //카테고리 중앙으로 이동
+    const moveCategory = (idx) => {
         document.getElementById('category' + idx).scrollIntoView({
             behavior: "smooth",
             block: "center",
             inline: "center",
         });
+    }
 
+
+
+    //카테고리 선택시 자동스크롤
+    const moveSection = (idx) => {
         //해당 섹션을 콘텐츠 최상단으로 이동
-        const container = document.getElementById('content'); // 스크롤을 제어할 컨테이너
+        const container = document.getElementById('content'); // 스크롤을 제어할 컨테이너 //나중에 최적화 필요
         const element = document.getElementById('section' + idx); // 이동할 목표 요소
         const offset = container.offsetTop; // 원하는 offset 값
-        
+
         // 해당 요소의 위치 계산 (container 기준으로)
         const elementPosition = element.getBoundingClientRect().top + container.scrollTop;
         const offsetPosition = elementPosition - offset;
-        
+
         // 부드러운 스크롤 효과 추가
         container.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth',
+            top: offsetPosition,
+            behavior: 'smooth',
         });
     }
-
 
 
     return (
