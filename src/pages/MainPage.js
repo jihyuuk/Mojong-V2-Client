@@ -1,4 +1,4 @@
-import { Button, ListGroup, Nav } from 'react-bootstrap';
+import { Button, ListGroup, Nav, Stack } from 'react-bootstrap';
 import React from 'react';
 import menu from "./dummyData.json";
 
@@ -16,18 +16,15 @@ function MainPage() {
                     <img src="/로고2.png" alt="그린아그로 로고" style={{ maxWidth: "100px" }} />
                 </div>
 
-                {/* 카테고리 */}
-                <div className='overflow-auto p-2'>
-                <Nav variant="underline" className="d-flex flex-nowrap text-nowrap" defaultActiveKey="link-0">
+                {/* 카테고리 탭 */}
+                <Stack direction="horizontal" gap={3} className='overflow-x-auto text-nowrap p-2'>
                     {menu.categories.map((category, index) => {
-                        return(
-                                <Nav.Item key={index}>
-                                    <Nav.Link className='custom-nav-link' eventKey={`link-${index}`}>{category.categoryName}</Nav.Link>
-                                </Nav.Item>
+                        return (
+                            <div className="p-2">{category.categoryName}</div>
                         );
                     })}
-                    </Nav>
-                </div>
+                </Stack>
+
             </div>
 
             {/* 콘텐츠 */}
@@ -43,7 +40,7 @@ function MainPage() {
                             {category.items.map((item) => {
                                 return (
                                     <ListGroup.Item className='d-flex gap-3'>
-                                        <div className='p-4 border rounded-4'>
+                                        <div className='p-4 border rounded-4 text-nowrap'>
                                             사진
                                         </div>
                                         <div>
