@@ -13,11 +13,26 @@ function MainPage() {
         setActiveCat(idx);
 
         //카테고리 중앙으로 이동
-        document.getElementById('category'+idx).scrollIntoView({
+        document.getElementById('category' + idx).scrollIntoView({
             behavior: "smooth",
             block: "center",
             inline: "center",
-          });
+        });
+
+        //해당 섹션을 콘텐츠 최상단으로 이동
+        const container = document.getElementById('content'); // 스크롤을 제어할 컨테이너
+        const element = document.getElementById('section' + idx); // 이동할 목표 요소
+        const offset = container.offsetTop; // 원하는 offset 값
+        
+        // 해당 요소의 위치 계산 (container 기준으로)
+        const elementPosition = element.getBoundingClientRect().top + container.scrollTop;
+        const offsetPosition = elementPosition - offset;
+        
+        // 부드러운 스크롤 효과 추가
+        container.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth',
+        });
     }
 
 
@@ -38,7 +53,7 @@ function MainPage() {
                 <Stack direction="horizontal" gap={3} className='overflow-x-auto text-nowrap p-2'>
                     {menu.categories.map((category, index) => {
                         return (
-                            <div id={`category${index}`} key={category.name} className={`myCategory ${index === activeCat ? 'active' : ''}`} onClick={()=>onCatClick(index)}>{category.categoryName}</div>
+                            <div id={`category${index}`} key={category.name} className={`myCategory ${index === activeCat ? 'active' : ''}`} onClick={() => onCatClick(index)}>{category.categoryName}</div>
                         );
                     })}
                 </Stack>
@@ -46,12 +61,12 @@ function MainPage() {
             </div>
 
             {/* 콘텐츠 */}
-            <div className='flex-grow-1 overflow-y-auto text-start bg-secondary-subtle'>
+            <div id='content' className='flex-grow-1 overflow-y-auto text-start bg-secondary-subtle'>
 
-                {menu.categories.map((category) => {
+                {menu.categories.map((category, index) => {
                     return (
                         // 카테고리명
-                        <ListGroup className='mb-4 bg-white rounded-0'>
+                        <ListGroup id={`section${index}`} key={category.categoryName} className='mb-4 bg-white rounded-0'>
                             <div className='fs-3 fw-bold p-2 ps-3'>{category.categoryName}</div>
 
                             {/* 카테고리 아이템 */}
