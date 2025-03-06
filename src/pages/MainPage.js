@@ -1,6 +1,7 @@
 import { Button, ListGroup, Stack } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
 import menu from "./dummyData.json";
+import { throttle } from 'lodash';
 
 function MainPage() {
 
@@ -45,19 +46,19 @@ function MainPage() {
 
     //스크롤 핸들러
     const scrollHandler = () => {
-        
+
         const container = document.getElementById('content').getBoundingClientRect().top; // 스크롤을 제어할 컨테이너 //나중에 최적화 필요
 
         //기준 offset
-        const offset = document.getElementById("content").getBoundingClientRect().top+30;
+        const offset = document.getElementById("content").getBoundingClientRect().top + 30;
 
-        for (let i = menu.categories.length-1; i >= 0; i--) {
+        for (let i = menu.categories.length - 1; i >= 0; i--) {
 
             //현재 섹션 위치 계산
-            const sectionOffset = document.getElementById('section'+i).getBoundingClientRect().top;
+            const sectionOffset = document.getElementById('section' + i).getBoundingClientRect().top;
 
             //기준 offset 해당하는지 확인
-            if(sectionOffset <= offset){
+            if (sectionOffset <= offset) {
                 //카테고리 움직이기
                 setActiveCat(i); //활성화 카테고리 변경
                 moveCategory(i); //카테고리 중앙으로 이동
@@ -66,16 +67,18 @@ function MainPage() {
         }
     }
 
+    // throttle을 적용한 handleScroll (200ms)
+    const throttledHandleScroll = throttle(scrollHandler, 300);
 
     //스크롤 감지 이벤트 등록
     useEffect(() => {
         const container = document.getElementById('content'); // 스크롤을 제어할 컨테이너 //나중에 최적화 필요
         if (container) {
-            container.addEventListener("scroll", scrollHandler);
+            container.addEventListener("scroll", throttledHandleScroll);
         }
         return () => {
             if (container) {
-                container.removeEventListener("scroll", scrollHandler);
+                container.removeEventListener("scroll", throttledHandleScroll);
             }
         };
     }, []);
@@ -134,8 +137,8 @@ function MainPage() {
                     );
                 })}
 
-                <div style={{height:"300px"}}>
-                    
+                <div style={{ height: "300px" }}>
+
                 </div>
 
             </div>
