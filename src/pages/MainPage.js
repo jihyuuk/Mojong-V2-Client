@@ -1,5 +1,5 @@
 import { Button, ListGroup, Stack } from 'react-bootstrap';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import menu from "./dummyData.json";
 import { throttle } from 'lodash';
 
@@ -7,12 +7,20 @@ function MainPage() {
 
     //현재 활성화된 카테고리
     const [activeCat, setActiveCat] = useState(0);
+    const scrollingRef = useRef(false);
 
     //카테고리 클릭시에
     const onCatClick = (idx) => {
         setActiveCat(idx); //활성화 카테고리 변경
         moveCategory(idx); //카테고리 중앙으로 이동
-        moveSection(idx); //해당 섹션으로 자동 스크롤
+
+        scrollingRef.current = true; // 스크롤 이벤트 비활성화
+        moveSection(idx); // 해당 섹션으로 자동 스크롤
+
+        //스크롤이벤트 1초후 활성화(정석 방법x)
+        setTimeout(() => {
+            scrollingRef.current = false;
+        }, 1000);
     }
 
     //카테고리 중앙으로 이동
@@ -27,6 +35,7 @@ function MainPage() {
 
     //카테고리 선택시 자동스크롤
     const moveSection = (idx) => {
+
         //해당 섹션을 콘텐츠 최상단으로 이동
         const container = document.getElementById('content'); // 스크롤을 제어할 컨테이너 //나중에 최적화 필요
         const element = document.getElementById('section' + idx); // 이동할 목표 요소
@@ -47,10 +56,12 @@ function MainPage() {
     //스크롤 핸들러
     const scrollHandler = () => {
 
+        if (scrollingRef.current) return;
+
         const container = document.getElementById('content').getBoundingClientRect().top; // 스크롤을 제어할 컨테이너 //나중에 최적화 필요
 
         //기준 offset
-        const offset = document.getElementById("content").getBoundingClientRect().top + 30;
+        const offset = document.getElementById("content").getBoundingClientRect().top + 50;
 
         for (let i = menu.categories.length - 1; i >= 0; i--) {
 
@@ -68,7 +79,7 @@ function MainPage() {
     }
 
     // throttle을 적용한 handleScroll (200ms)
-    const throttledHandleScroll = throttle(scrollHandler, 300);
+    const throttledHandleScroll = throttle(scrollHandler, 200);
 
     //스크롤 감지 이벤트 등록
     useEffect(() => {
