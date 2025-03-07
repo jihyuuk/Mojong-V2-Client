@@ -1,5 +1,5 @@
 import { Button, ListGroup, Stack } from 'react-bootstrap';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import menu from "./dummyData.json";
 import { throttle } from 'lodash';
 
@@ -14,7 +14,7 @@ function MainPage() {
     const contentRef = useRef(null);
     const categoryRefs = useRef([]);
     const sectionRefs = useRef([]);
-    const categoryCount = useMemo(()=>menu.categories.length, []);// 카테고리 개수 캐싱 (불필요한 연산 방지)
+    const categoryCount = useMemo(() => menu.categories.length, []);// 카테고리 개수 캐싱 (불필요한 연산 방지)
 
 
     //카테고리 클릭시에
@@ -48,7 +48,7 @@ function MainPage() {
         const container = contentRef.current;
         const element = sectionRefs.current[idx];
 
-        if(!container || !element) return;
+        if (!container || !element) return;
 
         // 해당 요소의 위치 계산 (container 기준으로)
         const elementPosition = element.getBoundingClientRect().top + container.scrollTop;
@@ -61,36 +61,34 @@ function MainPage() {
         });
     }
 
-
-    //스크롤 핸들러
-    const scrollHandler = () => {
-
+    // 스크롤 핸들러
+    const scrollHandler = useCallback(() => {
         if (scrollingRef.current) return;
-
-        //기준 offset
-        const offset = contentRef.current?.getBoundingClientRect().top + 50;
-
+    
+        const containerTop = contentRef.current?.getBoundingClientRect().top || 0;
+        const offset = containerTop + 50;
+    
         for (let i = categoryCount - 1; i >= 0; i--) {
-
-            //현재 섹션 위치 계산
-            const sectionOffset =  sectionRefs.current[i]?.getBoundingClientRect().top || 0;
-
-            //기준 offset 해당하는지 확인
-            if (sectionOffset <= offset) {
-                //카테고리 움직이기
-                setActiveCat(i); //활성화 카테고리 변경
-                moveCategory(i); //카테고리 중앙으로 이동
+            const sectionTop = sectionRefs.current[i]?.getBoundingClientRect().top || 0;
+    
+            if (sectionTop <= offset) {
+                //불필요한 상태 업데이트 방지
+                if (activeCat !== i) {
+                    setActiveCat(i);
+                    moveCategory(i);
+                }
                 break;
             }
         }
-    }
+    }, [categoryCount, activeCat]); // usecallback공부 필요
+    
 
-    // throttle을 적용한 handleScroll (200ms)
-    const throttledHandleScroll = throttle(scrollHandler, 200);
+    // throttle 적용한 스크롤 핸들러 (200ms)
+    const throttledHandleScroll = useCallback(throttle(scrollHandler, 200), [scrollHandler]);
 
-    //스크롤 감지 이벤트 등록
+    // 스크롤 이벤트 등록
     useEffect(() => {
-        const container =contentRef.current;
+        const container = contentRef.current;
         if (container) {
             container.addEventListener("scroll", throttledHandleScroll);
         }
@@ -99,9 +97,7 @@ function MainPage() {
                 container.removeEventListener("scroll", throttledHandleScroll);
             }
         };
-    }, []);
-
-
+    }, [throttledHandleScroll]);
 
     return (
         // 메인페이지
@@ -119,15 +115,15 @@ function MainPage() {
                 <Stack direction="horizontal" gap={3} className='overflow-x-auto text-nowrap p-2'>
                     {menu.categories.map((category, index) => {
                         return (
-                            <div 
-                                id={`category${index}`} 
-                                key={category.name} 
-                                className={`myCategory ${index === activeCat ? 'active' : ''}`} 
+                            <div
+                                id={`category${index}`}
+                                key={category.name}
+                                className={`myCategory ${index === activeCat ? 'active' : ''}`}
                                 onClick={() => onCatClick(index)}
                                 ref={(el) => (categoryRefs.current[index] = el)}
                             >
-                                    {category.categoryName}
-                                </div>
+                                {category.categoryName}
+                            </div>
                         );
                     })}
                 </Stack>
