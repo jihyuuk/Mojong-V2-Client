@@ -1,5 +1,5 @@
 import { Button, ListGroup, Stack } from 'react-bootstrap';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import menu from "./dummyData.json";
 import { throttle } from 'lodash';
 
@@ -7,7 +7,15 @@ function MainPage() {
 
     //현재 활성화된 카테고리
     const [activeCat, setActiveCat] = useState(0);
+    //섹션 스크롤 여부
     const scrollingRef = useRef(false);
+
+    //DOM 요소 캐싱
+    const contentRef = useRef(null);
+    const categoryRefs = useRef([]);
+    const sectionRefs = useRef([]);
+    const categoryCount = useMemo(()=>menu.categories.length, []);// 카테고리 개수 캐싱 (불필요한 연산 방지)
+
 
     //카테고리 클릭시에
     const onCatClick = (idx) => {
@@ -25,7 +33,7 @@ function MainPage() {
 
     //카테고리 중앙으로 이동
     const moveCategory = (idx) => {
-        document.getElementById('category' + idx).scrollIntoView({
+        categoryRefs.current[idx]?.scrollIntoView({
             behavior: "smooth",
             block: "center",
             inline: "center",
@@ -33,17 +41,18 @@ function MainPage() {
     }
 
 
-    //카테고리 선택시 자동스크롤
+    //선택한 섹션으로 자동스크롤
     const moveSection = (idx) => {
 
         //해당 섹션을 콘텐츠 최상단으로 이동
-        const container = document.getElementById('content'); // 스크롤을 제어할 컨테이너 //나중에 최적화 필요
-        const element = document.getElementById('section' + idx); // 이동할 목표 요소
-        const offset = container.offsetTop; // 원하는 offset 값
+        const container = contentRef.current;
+        const element = sectionRefs.current[idx];
+
+        if(!container || !element) return;
 
         // 해당 요소의 위치 계산 (container 기준으로)
         const elementPosition = element.getBoundingClientRect().top + container.scrollTop;
-        const offsetPosition = elementPosition - offset;
+        const offsetPosition = elementPosition - container.offsetTop;
 
         // 부드러운 스크롤 효과 추가
         container.scrollTo({
@@ -58,15 +67,13 @@ function MainPage() {
 
         if (scrollingRef.current) return;
 
-        const container = document.getElementById('content').getBoundingClientRect().top; // 스크롤을 제어할 컨테이너 //나중에 최적화 필요
-
         //기준 offset
-        const offset = document.getElementById("content").getBoundingClientRect().top + 50;
+        const offset = contentRef.current?.getBoundingClientRect().top + 50;
 
-        for (let i = menu.categories.length - 1; i >= 0; i--) {
+        for (let i = categoryCount - 1; i >= 0; i--) {
 
             //현재 섹션 위치 계산
-            const sectionOffset = document.getElementById('section' + i).getBoundingClientRect().top;
+            const sectionOffset =  sectionRefs.current[i]?.getBoundingClientRect().top || 0;
 
             //기준 offset 해당하는지 확인
             if (sectionOffset <= offset) {
@@ -83,7 +90,7 @@ function MainPage() {
 
     //스크롤 감지 이벤트 등록
     useEffect(() => {
-        const container = document.getElementById('content'); // 스크롤을 제어할 컨테이너 //나중에 최적화 필요
+        const container =contentRef.current;
         if (container) {
             container.addEventListener("scroll", throttledHandleScroll);
         }
@@ -112,7 +119,15 @@ function MainPage() {
                 <Stack direction="horizontal" gap={3} className='overflow-x-auto text-nowrap p-2'>
                     {menu.categories.map((category, index) => {
                         return (
-                            <div id={`category${index}`} key={category.name} className={`myCategory ${index === activeCat ? 'active' : ''}`} onClick={() => onCatClick(index)}>{category.categoryName}</div>
+                            <div 
+                                id={`category${index}`} 
+                                key={category.name} 
+                                className={`myCategory ${index === activeCat ? 'active' : ''}`} 
+                                onClick={() => onCatClick(index)}
+                                ref={(el) => (categoryRefs.current[index] = el)}
+                            >
+                                    {category.categoryName}
+                                </div>
                         );
                     })}
                 </Stack>
@@ -120,12 +135,12 @@ function MainPage() {
             </div>
 
             {/* 콘텐츠 */}
-            <div id='content' className='flex-grow-1 overflow-y-auto text-start bg-secondary-subtle'>
+            <div id='content' ref={contentRef} className='flex-grow-1 overflow-y-auto text-start bg-secondary-subtle'>
 
                 {menu.categories.map((category, index) => {
                     return (
                         // 카테고리명
-                        <ListGroup id={`section${index}`} key={category.categoryName} className='mb-4 bg-white rounded-0'>
+                        <ListGroup id={`section${index}`} key={category.categoryName} className='mb-4 bg-white rounded-0' ref={(el) => (sectionRefs.current[index] = el)}>
                             <div className='fs-3 fw-bold p-2 ps-3'>{category.categoryName}</div>
 
                             {/* 카테고리 아이템 */}
