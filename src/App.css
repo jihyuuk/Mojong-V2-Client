@@ -9,9 +9,15 @@
   
 
   /* 카테고리 폰트 색상 */
-  .custom-nav-link {
-    color: #6c757d; /* 기본색상 */
+  .myCategory{
+    padding: 0.5rem;
+    color: #6c757d;
+    font-weight: 500;
+    font-size: large;
   }
-  .custom-nav-link.active {
-    color: #007bff; /* 활성화된 탭은 파란색으로 변경 */
+  /* 카테고리 활성화 */
+  .myCategory.active{
+    font-weight: bold;
+    color:#198754;
+    border-bottom: 3px solid #198754;
   }
