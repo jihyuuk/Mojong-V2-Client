@@ -1,7 +1,53 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
 
-function DetailPage({item}) {
+function DetailPage({ item }) {
+
+    //재고
+    const stock = item.quantity;
+    //수량
+    const [quantity, setQuantity] = useState(0);
+    //최대수량
+    const maxQuantity = 999;
+
+    //가격
+    const [total, setTotal] = useState(0);
+
+    //수량
+    const inputRef = useRef(null);
+
+    //수량 변화시 금액 변경
+    useEffect(()=>{
+        setTotal(item.price * quantity);
+    },[quantity])
+
+
+    //마이너스 버튼 클릭
+    const clickMinus = () => {
+        if (quantity > 0) {
+            setQuantity(quantity - 1);
+        }
+    }
+
+    //플러스 버튼 클릭
+    const clickPlus = () => {
+        if (quantity < maxQuantity) {
+            setQuantity(quantity + 1);
+        }
+    }
+
+    //수량 직접 입력
+    const handleKeyDown = (e) => {
+        console.log(e.key)
+        if(e.key === 'Backspace'){
+            setQuantity(parseInt(quantity/10));
+        }else{
+            const cal = quantity*10+parseInt(e.key);
+            if(cal <= maxQuantity){
+                setQuantity(cal)
+            }
+        }
+    };
 
     return (
         <div className='d-flex flex-column h-100'>
@@ -36,7 +82,7 @@ function DetailPage({item}) {
                         가격
                     </div>
                     <div>
-                        {item.price}원
+                        {item.price.toLocaleString('ko-KR')}원
                     </div>
                 </div>
 
@@ -46,17 +92,24 @@ function DetailPage({item}) {
                     </div>
                     {/* 수량 입력칸 */}
                     <div className="border rounded-3 d-flex align-items-center">
-                        <span className="px-3 py-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-lg" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8" />
+                        <span className={`px-3 py-2 ${quantity < 1 ? 'text-secondary' : ''}`} onClick={clickMinus}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-dash-lg" viewBox="0 0 16 16">
+                                <path fillRule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8" />
                             </svg>
                         </span>
 
-                        <input type="text" size={3} className="text-center border-0" pattern="[0-9]*" inputmode="numeric" value={300} />
+                        <input type="text" size={3} pattern="[0-9]*" inputMode="numeric"
+                            ref={inputRef}
+                            className="text-center border-0"
+                            value={quantity === 0 ? '' : quantity}
+                            placeholder='0'
+                            onKeyDown={handleKeyDown}
+                            style={{caretColor : 'transparent'}}
+                        />
 
-                        <span className="px-3 py-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                        <span className={`px-3 py-2 ${quantity >= maxQuantity ? 'text-secondary' : ''}`} onClick={clickPlus}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-lg" viewBox="0 0 16 16">
+                                <path fillRule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
                             </svg>
                         </span>
                     </div>
@@ -66,7 +119,9 @@ function DetailPage({item}) {
             {/* 푸터 */}
             <footer className='pb-3'>
                 <div className='p-2 border-top'>
-                    <Button variant='success' className='w-100 fw-semibold fs-4 py-2'>23,000원 담기</Button>
+                    <Button variant='success' className='w-100 fw-semibold fs-4 py-2' disabled={total <= 0 ? true : false}>
+                        {total <= 0? '수량을 입력해주세요.' : total.toLocaleString('ko-KR')+'원 담기'}
+                    </Button>
                 </div>
             </footer>
         </div >
