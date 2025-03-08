@@ -50,7 +50,7 @@ function DetailPage({ item, close }) {
     };
 
     return (
-        <div className='d-flex flex-column h-100 z-1 fixed-top bg-white'>
+        <div className='d-flex flex-column h-100 bg-white'>
 
             {/* 헤더 */}
             <header className='p-2 border-bottom border-success-subtle position-relative'>
