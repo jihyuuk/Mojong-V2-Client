@@ -2,6 +2,7 @@ import { Button, ListGroup, Stack } from 'react-bootstrap';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import menu from "./dummyData.json";
 import { throttle } from 'lodash';
+import DetailPage from './DetailPage';
 
 function MainPage() {
 
@@ -15,6 +16,9 @@ function MainPage() {
     const categoryRefs = useRef([]);
     const sectionRefs = useRef([]);
     const categoryCount = useMemo(() => menu.categories.length, []);// 카테고리 개수 캐싱 (불필요한 연산 방지)
+
+    //아이템 상세 페이지 출력 여부
+    const [selectedItem, setSelectedItem] = useState(null);
 
 
     //카테고리 클릭시에
@@ -101,6 +105,7 @@ function MainPage() {
 
     return (
         // 메인페이지
+        <>
         <div className="MainPage d-flex flex-column h-100 text-center">
 
             {/* 헤더 */}
@@ -142,14 +147,13 @@ function MainPage() {
                             {/* 카테고리 아이템 */}
                             {category.items.map((item) => {
                                 return (
-                                    <ListGroup.Item className='d-flex gap-3'>
-                                        <div className='p-4 border rounded-4 text-nowrap'>
-                                            사진
-                                        </div>
+                                    <ListGroup.Item className='d-flex gap-3' onClick={()=>setSelectedItem(item)}>
+                                        <img src={item.photo} style={{maxWidth:'100px'}} className='rounded-4 my-auto'/>
+
                                         <div>
-                                            <div className="fw-semibold fs-5">{item.name}</div>
-                                            <div className='mt-1'>{item.description}</div>
-                                            <div className='mt-1'>{item.price}원</div>
+                                            <div className="fw-bold fs-4">{item.name}</div>
+                                            <div className='mt-1 text-secondary'>{item.description}</div>
+                                            <div className='mt-2 fs-5 fw-semibold'>{item.price.toLocaleString('ko-KR')}원</div>
                                         </div>
                                     </ListGroup.Item>
                                 );
@@ -172,6 +176,12 @@ function MainPage() {
                 </Button>
             </div>
         </div>
+
+        {/* 아이템 상세페이지 */}
+        {selectedItem && 
+        <DetailPage item={selectedItem} close={()=>setSelectedItem(null)}/>
+        }
+        </>
     );
 }
 

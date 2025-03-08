@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
 
-function DetailPage({ item }) {
+function DetailPage({ item, close }) {
 
     //재고
     const stock = item.quantity;
@@ -50,12 +50,12 @@ function DetailPage({ item }) {
     };
 
     return (
-        <div className='d-flex flex-column h-100'>
+        <div className='d-flex flex-column h-100 z-1 fixed-top bg-white'>
 
             {/* 헤더 */}
             <header className='p-2 border-bottom border-success-subtle position-relative'>
                 {/* 뒤로가기 버튼 */}
-                <div className='p-1'>
+                <div className='p-1' onClick={close}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-chevron-left" viewBox="0 0 16 16">
                         <path fillRule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
                     </svg>
