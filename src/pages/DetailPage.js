@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 
-function DetailPage() {
+function DetailPage({item}) {
 
     return (
         <div className='d-flex flex-column h-100'>
@@ -25,18 +25,18 @@ function DetailPage() {
             <main className='flex-grow-1 overflow-y-auto p-3 pt-0'>
                 {/* 사진 */}
                 <div className='text-center'>
-                    <img src="애호박.png" style={{ maxHeight: '200px' }} />
+                    <img src={item.photo} style={{ maxHeight: '200px' }} />
                 </div>
 
-                <div className='fw-bold fs-1'>애호박</div>
-                <div className='py-3 text-secondary'>애호박은 단맛이 나는 부드러운 호박으로, 다양한 요리에 활용된다. 따뜻한 기후에서 잘 자라며</div>
+                <div className='fw-bold fs-1'>{item.name}</div>
+                <div className='py-3 text-secondary'>{item.description}</div>
 
                 <div className='mt-3 fw-semibold fs-5 d-flex justify-content-between'>
                     <div>
                         가격
                     </div>
                     <div>
-                        500원
+                        {item.price}원
                     </div>
                 </div>
 
