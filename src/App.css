@@ -5,6 +5,8 @@
     height: 100%;
     margin: auto;
     background-color: white;
+    position: relative;
+    overflow: hidden;
   }
   
 
