@@ -1,9 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, ListGroup } from "react-bootstrap";
 
 function ShoppingCartPage() {
 
-    const item = [1];
+    const items = [{name: "페퍼로니 피자", price: 18000, quantity: 123}, {name: "불고기 피자", price: 22000, quantity: 5}];
+
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [totalQuantity, setTotalQuantity] = useState(0);
+
+    useEffect(() => {
+        let calPrice = 0;
+        let calQuantity = 0;
+    
+        items.forEach((item) => {
+            calPrice += item.quantity * item.price;
+            calQuantity += item.quantity;
+        });
+    
+        // 기존 값과 다를 때만 업데이트
+        setTotalPrice(prev => (prev !== calPrice ? calPrice : prev));
+        setTotalQuantity(prev => (prev !== calQuantity ? calQuantity : prev));
+    
+    }, [items]);
 
     return (
         <div className="d-flex flex-column h-100">
@@ -23,7 +41,7 @@ function ShoppingCartPage() {
 
             {/* 메인 */}
             <main className='my-content overflow-y-auto flex-grow-1 bg-secondary-subtle'>
-                {item.map(() => {
+                {items.map((item, index) => {
                     return (
                         <ListGroup variant='flush' className='bg-white border'>
 
@@ -35,7 +53,7 @@ function ShoppingCartPage() {
                                     {/* 헤더 */}
                                     <div className='d-flex align-items-center justify-content-between'>
                                         {/* 상품명 */}
-                                        <span className='fs-5 fw-semibold text-success me-2'>1. 칼탄파워</span>
+                                        <span className='fs-5 fw-semibold text-success me-2'>{index+1}. {item.name}</span>
                                         {/* 닫기버튼 */}
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16" >
                                             <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
@@ -52,7 +70,7 @@ function ShoppingCartPage() {
                                                 <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
                                             </svg>
                                             {/* 수량 */}
-                                            <span className='mx-3'>30</span>
+                                            <span className='mx-3'>{item.quantity}</span>
                                             {/* 더하기 */}
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-plus m-auto" viewBox="0 0 16 16">
                                                 <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
@@ -61,9 +79,9 @@ function ShoppingCartPage() {
 
                                         <div className='pt-2'>
                                             {/* 단가 */}
-                                            <div className='text-secondary text-end'>단가 300원</div>
+                                            <div className='text-secondary text-end'>단가 {item.price.toLocaleString('ko-KR')}원</div>
                                             {/* 합계 */}
-                                            <div className='' style={{ fontSize: '1.15rem' }}>합계 <span className='fw-semibold'>17,000</span>원</div>
+                                            <div className='' style={{ fontSize: '1.15rem' }}>합계 <span className='fw-semibold'>{(item.price * item.quantity).toLocaleString('ko-KR')}</span>원</div>
                                         </div>
                                     </div>
 
@@ -89,8 +107,8 @@ function ShoppingCartPage() {
             <footer className='pb-3'>
                     <div className='w-100 p-2 pt-0' >
                         <div className='p-2 d-flex justify-content-between text-secondary'>
-                            <div>품목 <span className='fw-semibold'>1</span> · 수량 <span className='fw-semibold'>30</span></div>
-                            <div className='text-success'>총 합계 <span className='fw-semibold'>17,000</span>원</div>
+                            <div>품목 <span className='fw-semibold'>{items.length}</span> · 수량 <span className='fw-semibold'>{totalQuantity}</span></div>
+                            <div className='text-success'>총 합계 <span className='fw-semibold'>{totalPrice.toLocaleString('ko-KR')}</span>원</div>
                         </div>
                         <Button variant="success" className="fs-5 p-2 px-3 rounded-3 w-100 fw-semibold">
                             <div className=''>주문하기</div>
