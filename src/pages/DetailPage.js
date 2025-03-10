@@ -17,9 +17,9 @@ function DetailPage({ item, close, setCartItems }) {
     const inputRef = useRef(null);
 
     //수량 변화시 금액 변경
-    useEffect(()=>{
+    useEffect(() => {
         setTotal(item.price * quantity);
-    },[quantity])
+    }, [quantity])
 
 
     //마이너스 버튼 클릭
@@ -39,21 +39,35 @@ function DetailPage({ item, close, setCartItems }) {
     //수량 직접 입력
     const handleKeyDown = (e) => {
         console.log(e.key)
-        if(e.key === 'Backspace'){
-            setQuantity(parseInt(quantity/10));
-        }else{
-            const cal = quantity*10+parseInt(e.key);
-            if(cal <= maxQuantity){
+        if (e.key === 'Backspace') {
+            setQuantity(parseInt(quantity / 10));
+        } else {
+            const cal = quantity * 10 + parseInt(e.key);
+            if (cal <= maxQuantity) {
                 setQuantity(cal)
             }
         }
     };
 
-    //장바구니에 담기
-    const addCart = ()=>{
-        setCartItems(prevItems => [...prevItems, { ...item, quantity: quantity }])
-        close();
-    }
+    const addCart = () => {
+        setCartItems(prevItems => {
+            // 이미 장바구니에 같은 상품이 있는지 확인
+            const existingItemIndex = prevItems.findIndex(preItem => preItem.name === item.name);
+
+            // 이미 있는 상품이면 수량만 증가
+            if (existingItemIndex !== -1) {
+                return prevItems.map((item, idx) =>
+                    idx === existingItemIndex
+                        ? { ...item, quantity: item.quantity + quantity }
+                        : item
+                );
+            }
+
+            // 없는 상품이면 새로 추가
+            return [...prevItems, { ...item, quantity: quantity }];
+        });
+        close(); // 상세페이지 닫기
+    };
 
     return (
         <div className='d-flex flex-column h-100 bg-white'>
@@ -110,7 +124,7 @@ function DetailPage({ item, close, setCartItems }) {
                             value={quantity === 0 ? '' : quantity}
                             placeholder='0'
                             onKeyDown={handleKeyDown}
-                            style={{caretColor : 'transparent'}}
+                            style={{ caretColor: 'transparent' }}
                         />
 
                         <span className={`px-3 py-2 ${quantity >= maxQuantity ? 'text-secondary' : ''}`} onClick={clickPlus}>
@@ -126,7 +140,7 @@ function DetailPage({ item, close, setCartItems }) {
             <footer className='pb-3'>
                 <div className='p-2 border-top'>
                     <Button variant='success' className='w-100 fw-semibold fs-4 py-2' disabled={total <= 0 ? true : false} onClick={addCart}>
-                        {total <= 0? '수량을 입력해주세요.' : total.toLocaleString('ko-KR')+'원 담기'}
+                        {total <= 0 ? '수량을 입력해주세요.' : total.toLocaleString('ko-KR') + '원 담기'}
                     </Button>
                 </div>
             </footer>
