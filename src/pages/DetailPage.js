@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
 
-function DetailPage({ item, close }) {
+function DetailPage({ item, close, setCartItems }) {
 
     //재고
     const stock = item.quantity;
@@ -48,6 +48,12 @@ function DetailPage({ item, close }) {
             }
         }
     };
+
+    //장바구니에 담기
+    const addCart = ()=>{
+        setCartItems(prevItems => [...prevItems, { ...item, quantity: quantity }])
+        close();
+    }
 
     return (
         <div className='d-flex flex-column h-100 bg-white'>
@@ -119,7 +125,7 @@ function DetailPage({ item, close }) {
             {/* 푸터 */}
             <footer className='pb-3'>
                 <div className='p-2 border-top'>
-                    <Button variant='success' className='w-100 fw-semibold fs-4 py-2' disabled={total <= 0 ? true : false}>
+                    <Button variant='success' className='w-100 fw-semibold fs-4 py-2' disabled={total <= 0 ? true : false} onClick={addCart}>
                         {total <= 0? '수량을 입력해주세요.' : total.toLocaleString('ko-KR')+'원 담기'}
                     </Button>
                 </div>

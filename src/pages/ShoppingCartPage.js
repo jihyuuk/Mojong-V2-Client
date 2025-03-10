@@ -1,37 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Button, ListGroup } from "react-bootstrap";
 
-function ShoppingCartPage({ close }) {
-
-    const [items, setItems] = useState([{ name: "페퍼로니 피자", price: 18000, quantity: 990 }, { name: "불고기 피자", price: 22000, quantity: 5 }, { name: "불고기 피자", price: 22000, quantity: 5 }, { name: "불고기 피자", price: 22000, quantity: 5 }]);
-
-    const [totalPrice, setTotalPrice] = useState(0);
-    const [totalQuantity, setTotalQuantity] = useState(0);
-
-    //총 수량, 품목수, 금액 계산 
-    useEffect(() => {
-        let calPrice = 0;
-        let calQuantity = 0;
-
-        items.forEach((item) => {
-            calPrice += item.quantity * item.price;
-            calQuantity += item.quantity;
-        });
-
-        // 기존 값과 다를 때만 업데이트
-        setTotalPrice(prev => (prev !== calPrice ? calPrice : prev));
-        setTotalQuantity(prev => (prev !== calQuantity ? calQuantity : prev));
-
-    }, [items]);
+function ShoppingCartPage({ close, cartItems, setCartItems, totalPrice, totalQuantity }) {
 
     //삭제버튼
     const clickDelete = (deleteIdx) => {
-        setItems(prevItems => prevItems.filter((_, idx) => idx !== deleteIdx));
+        setCartItems(prevItems => prevItems.filter((_, idx) => idx !== deleteIdx));
     }
 
     //수량 플러스
     const clickPlus = (plusIdx) => {
-        setItems(prevItems => prevItems.map(
+        setCartItems(prevItems => prevItems.map(
             (item, idx) => {
                 if(idx !== plusIdx || item.quantity >= 999){
                     return item;
@@ -44,7 +23,7 @@ function ShoppingCartPage({ close }) {
 
     //수량 마이너스
     const clickMinus = (minusIdx) => {
-        setItems(prevItems => prevItems.map(
+        setCartItems(prevItems => prevItems.map(
             (item, idx) => {
                 if(idx !== minusIdx || item.quantity <= 1){
                     return item;
@@ -74,7 +53,7 @@ function ShoppingCartPage({ close }) {
 
             {/* 메인 */}
             <main className='my-content overflow-y-auto flex-grow-1 bg-secondary-subtle'>
-                {items.map((item, index) => {
+                {cartItems.map((item, index) => {
                     return (
                         <ListGroup variant='flush' className='bg-white border'>
 
@@ -140,7 +119,7 @@ function ShoppingCartPage({ close }) {
             <footer className='pb-3'>
                 <div className='w-100 p-2 pt-0' >
                     <div className='p-2 d-flex justify-content-between text-secondary'>
-                        <div>품목 <span className='fw-semibold'>{items.length}</span> · 수량 <span className='fw-semibold'>{totalQuantity}</span></div>
+                        <div>품목 <span className='fw-semibold'>{cartItems.length}</span> · 수량 <span className='fw-semibold'>{totalQuantity}</span></div>
                         <div className='text-success'>총 합계 <span className='fw-semibold'>{totalPrice.toLocaleString('ko-KR')}</span>원</div>
                     </div>
                     <Button variant="success" className="fs-5 p-2 px-3 rounded-3 w-100 fw-semibold" disabled={totalPrice <= 0 ? true : false }>
