@@ -1,9 +1,11 @@
 {
     "categories": [
         {
+            "categoryId": 1,
             "categoryName": "피자",
             "items": [
                 {
+                    "id": 1,
                     "name": "페퍼로니 피자",
                     "photo": "https://picsum.photos/id/1/200/200",
                     "price": 18000,
@@ -11,6 +13,7 @@
                     "description": "매콤한 페퍼로니와 치즈가 듬뿍 들어간 피자."
                 },
                 {
+                    "id": 2,
                     "name": "불고기 피자",
                     "photo": "https://picsum.photos/id/2/200/200",
                     "price": 22000,
@@ -18,6 +21,7 @@
                     "description": "고소한 불고기와 신선한 야채가 어우러진 피자."
                 },
                 {
+                    "id": 3,
                     "name": "콤비네이션 피자",
                     "photo": "https://picsum.photos/id/3/200/200",
                     "price": 25000,
@@ -25,6 +29,7 @@
                     "description": "여러 가지 토핑이 어우러진 퓨전 피자."
                 },
                 {
+                    "id": 4,
                     "name": "치즈 피자",
                     "photo": "https://picsum.photos/id/4/200/200",
                     "price": 17000,
@@ -32,6 +37,7 @@
                     "description": "고소한 치즈가 듬뿍 들어간 심플 피자."
                 },
                 {
+                    "id": 5,
                     "name": "슈프림 피자",
                     "photo": "https://picsum.photos/id/5/200/200",
                     "price": 27000,
@@ -41,9 +47,11 @@
             ]
         },
         {
+            "categoryId": 2,
             "categoryName": "사이드",
             "items": [
                 {
+                    "id": 6,
                     "name": "감자튀김",
                     "photo": "https://picsum.photos/id/6/200/200",
                     "price": 7000,
@@ -51,6 +59,7 @@
                     "description": "바삭하게 튀긴 감자튀김."
                 },
                 {
+                    "id": 7,
                     "name": "치킨윙",
                     "photo": "https://picsum.photos/id/7/200/200",
                     "price": 12000,
@@ -58,6 +67,7 @@
                     "description": "매콤하고 바삭한 치킨윙."
                 },
                 {
+                    "id": 8,
                     "name": "갈릭 브레드",
                     "photo": "https://picsum.photos/id/8/200/200",
                     "price": 5000,
@@ -65,6 +75,7 @@
                     "description": "고소한 마늘 버터로 구운 브레드."
                 },
                 {
+                    "id": 9,
                     "name": "샐러드",
                     "photo": "https://picsum.photos/id/9/200/200",
                     "price": 6000,
@@ -72,6 +83,7 @@
                     "description": "신선한 야채로 만든 건강한 샐러드."
                 },
                 {
+                    "id": 10,
                     "name": "모짜렐라 스틱",
                     "photo": "https://picsum.photos/id/10/200/200",
                     "price": 8000,
@@ -81,9 +93,11 @@
             ]
         },
         {
+            "categoryId": 3,
             "categoryName": "음료",
             "items": [
                 {
+                    "id": 11,
                     "name": "콜라",
                     "photo": "https://picsum.photos/id/11/200/200",
                     "price": 3000,
@@ -91,6 +105,7 @@
                     "description": "시원하고 청량한 콜라."
                 },
                 {
+                    "id": 12,
                     "name": "아이스티",
                     "photo": "https://picsum.photos/id/12/200/200",
                     "price": 3500,
@@ -98,6 +113,7 @@
                     "description": "달콤하고 상큼한 아이스티."
                 },
                 {
+                    "id": 13,
                     "name": "레모네이드",
                     "photo": "https://picsum.photos/id/13/200/200",
                     "price": 4000,
@@ -105,6 +121,7 @@
                     "description": "신선한 레몬으로 만든 레모네이드."
                 },
                 {
+                    "id": 14,
                     "name": "사이다",
                     "photo": "https://picsum.photos/id/14/200/200",
                     "price": 3000,
@@ -112,6 +129,7 @@
                     "description": "깔끔하고 상쾌한 사이다."
                 },
                 {
+                    "id": 15,
                     "name": "맥주",
                     "photo": "https://picsum.photos/id/15/200/200",
                     "price": 6000,
@@ -121,9 +139,11 @@
             ]
         },
         {
+            "categoryId": 4,
             "categoryName": "디저트",
             "items": [
                 {
+                    "id": 16,
                     "name": "초코 브라우니",
                     "photo": "https://picsum.photos/id/16/200/200",
                     "price": 5000,
@@ -131,6 +151,7 @@
                     "description": "진한 초콜릿이 가득한 브라우니."
                 },
                 {
+                    "id": 17,
                     "name": "치즈 케이크",
                     "photo": "https://picsum.photos/id/17/200/200",
                     "price": 7000,
@@ -138,6 +159,7 @@
                     "description": "부드럽고 진한 치즈 케이크."
                 },
                 {
+                    "id": 18,
                     "name": "티라미수",
                     "photo": "https://picsum.photos/id/18/200/200",
                     "price": 7500,
@@ -145,6 +167,7 @@
                     "description": "커피 향이 가득한 이탈리안 디저트."
                 },
                 {
+                    "id": 19,
                     "name": "아이스크림",
                     "photo": "https://picsum.photos/id/19/200/200",
                     "price": 4000,
@@ -152,6 +175,7 @@
                     "description": "시원하고 달콤한 아이스크림."
                 },
                 {
+                    "id": 20,
                     "name": "마카롱",
                     "photo": "https://picsum.photos/id/20/200/200",
                     "price": 9000,
@@ -161,9 +185,11 @@
             ]
         },
         {
+            "categoryId": 5,
             "categoryName": "파스타",
             "items": [
                 {
+                    "id": 21,
                     "name": "까르보나라",
                     "photo": "https://picsum.photos/id/21/200/200",
                     "price": 12000,
@@ -171,6 +197,7 @@
                     "description": "크리미한 소스가 어우러진 까르보나라 파스타."
                 },
                 {
+                    "id": 22,
                     "name": "알리오 올리오",
                     "photo": "https://picsum.photos/id/22/200/200",
                     "price": 11000,
@@ -178,6 +205,7 @@
                     "description": "담백하고 깔끔한 올리브오일 파스타."
                 },
                 {
+                    "id": 23,
                     "name": "볼로네제",
                     "photo": "https://picsum.photos/id/23/200/200",
                     "price": 13000,
@@ -185,6 +213,7 @@
                     "description": "진한 미트소스가 들어간 볼로네제 파스타."
                 },
                 {
+                    "id": 24,
                     "name": "새우 로제 파스타",
                     "photo": "https://picsum.photos/id/24/200/200",
                     "price": 14000,
@@ -192,6 +221,7 @@
                     "description": "매콤한 로제소스와 새우가 들어간 파스타."
                 },
                 {
+                    "id": 25,
                     "name": "해산물 파스타",
                     "photo": "https://picsum.photos/id/25/200/200",
                     "price": 15000,
@@ -201,9 +231,11 @@
             ]
         },
         {
+            "categoryId": 6,
             "categoryName": "소스",
             "items": [
                 {
+                    "id": 26,
                     "name": "갈릭 디핑 소스",
                     "photo": "https://picsum.photos/id/26/200/200",
                     "price": 1000,
@@ -211,6 +243,7 @@
                     "description": "고소한 마늘 향이 풍부한 갈릭 디핑 소스."
                 },
                 {
+                    "id": 27,
                     "name": "스위트 칠리 소스",
                     "photo": "https://picsum.photos/id/27/200/200",
                     "price": 1500,
@@ -218,6 +251,7 @@
                     "description": "달콤하고 매콤한 스위트 칠리 소스."
                 },
                 {
+                    "id": 28,
                     "name": "랜치 소스",
                     "photo": "https://picsum.photos/id/28/200/200",
                     "price": 1200,
@@ -225,6 +259,7 @@
                     "description": "부드럽고 크리미한 랜치 소스."
                 },
                 {
+                    "id": 29,
                     "name": "허니 머스타드",
                     "photo": "https://picsum.photos/id/29/200/200",
                     "price": 1300,
@@ -232,6 +267,7 @@
                     "description": "달콤하고 부드러운 허니 머스타드 소스."
                 },
                 {
+                    "id": 30,
                     "name": "바베큐 소스",
                     "photo": "https://picsum.photos/id/30/200/200",
                     "price": 1400,
@@ -241,9 +277,11 @@
             ]
         },
         {
+            "categoryId": 7,
             "categoryName": "핫도그",
             "items": [
                 {
+                    "id": 31,
                     "name": "클래식 핫도그",
                     "photo": "https://picsum.photos/id/31/200/200",
                     "price": 5000,
@@ -251,6 +289,7 @@
                     "description": "부드러운 번과 소시지가 조화로운 핫도그."
                 },
                 {
+                    "id": 32,
                     "name": "치즈 핫도그",
                     "photo": "https://picsum.photos/id/32/200/200",
                     "price": 6000,
@@ -258,6 +297,7 @@
                     "description": "체다 치즈가 듬뿍 들어간 핫도그."
                 },
                 {
+                    "id": 33,
                     "name": "칠리 핫도그",
                     "photo": "https://picsum.photos/id/33/200/200",
                     "price": 6500,
@@ -265,6 +305,7 @@
                     "description": "매콤한 칠리 소스를 곁들인 핫도그."
                 },
                 {
+                    "id": 34,
                     "name": "베이컨 랩 핫도그",
                     "photo": "https://picsum.photos/id/34/200/200",
                     "price": 7000,
@@ -272,6 +313,7 @@
                     "description": "베이컨을 감싼 풍미 가득한 핫도그."
                 },
                 {
+                    "id": 35,
                     "name": "콘도그",
                     "photo": "https://picsum.photos/id/35/200/200",
                     "price": 5500,
@@ -281,9 +323,11 @@
             ]
         },
         {
+            "categoryId": 8,
             "categoryName": "햄버거",
             "items": [
                 {
+                    "id": 36,
                     "name": "불고기 버거",
                     "photo": "https://picsum.photos/id/36/200/200",
                     "price": 5500,
@@ -291,6 +335,7 @@
                     "description": "달콤한 불고기 소스로 맛을 낸 클래식 불고기 버거."
                 },
                 {
+                    "id": 37,
                     "name": "치즈 버거",
                     "photo": "https://picsum.photos/id/37/200/200",
                     "price": 6000,
@@ -300,9 +345,11 @@
             ]
         },
         {
+            "categoryId": 9,
             "categoryName": "치킨",
             "items": [
                 {
+                    "id": 38,
                     "name": "후라이드 치킨",
                     "photo": "https://picsum.photos/id/38/200/200",
                     "price": 17000,
@@ -310,6 +357,7 @@
                     "description": "바삭하고 촉촉한 전통 후라이드 치킨."
                 },
                 {
+                    "id": 39,
                     "name": "양념 치킨",
                     "photo": "https://picsum.photos/id/39/200/200",
                     "price": 18000,
