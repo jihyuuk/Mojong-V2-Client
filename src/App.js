@@ -18,28 +18,29 @@ function App() {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantity, setTotalQuantity] = useState(0);
-  
-    //총 수량, 품목수, 금액 계산 
-    useEffect(() => {
-      let calPrice = 0;
-      let calQuantity = 0;
 
-      cartItems.forEach((item) => {
-          calPrice += item.quantity * item.price;
-          calQuantity += item.quantity;
-      });
+  //총 수량, 품목수, 금액 계산 
+  useEffect(() => {
+    let calPrice = 0;
+    let calQuantity = 0;
 
-      // 기존 값과 다를 때만 업데이트
-      setTotalPrice(prev => (prev !== calPrice ? calPrice : prev));
-      setTotalQuantity(prev => (prev !== calQuantity ? calQuantity : prev));
-      if(calPrice === 0) setShowShoppingCart(false);
+    cartItems.forEach((item) => {
+      calPrice += item.quantity * item.price;
+      calQuantity += item.quantity;
+    });
+
+    //값 업데이트
+    setTotalPrice(calPrice);
+    setTotalQuantity(calQuantity);
+    //장바구니 담긴거 없을때 닫기
+    if (calPrice === 0) setShowShoppingCart(false);
   }, [cartItems]);
 
   return (
     <div className="App">
 
       {/* 메인 페이지 */}
-      <MainPage setSelectedItem={setSelectedItem} setShowShoppingCart={setShowShoppingCart} totalPrice={totalPrice}/>
+      <MainPage setSelectedItem={setSelectedItem} setShowShoppingCart={setShowShoppingCart} totalPrice={totalPrice} />
 
       {/* 아이템 상세 페이지 */}
       {selectedItem && (
@@ -49,7 +50,7 @@ function App() {
           transition={{ duration: 0.2 }}
           className='z-1 position-absolute top-0 start-0 w-100 h-100 bg-white'
         >
-          <DetailPage item={selectedItem} close={() => setSelectedItem(null)} setCartItems={setCartItems}/>
+          <DetailPage item={selectedItem} close={() => setSelectedItem(null)} setCartItems={setCartItems} />
         </motion.div>
       )}
 
@@ -61,11 +62,11 @@ function App() {
           transition={{ duration: 0.2 }}
           className='z-1 position-absolute top-0 start-0 w-100 h-100 bg-white'
         >
-          <ShoppingCartPage 
-            close={()=>setShowShoppingCart(false)} 
-            cartItems={cartItems} 
-            setCartItems={setCartItems} 
-            totalPrice={totalPrice} 
+          <ShoppingCartPage
+            close={() => setShowShoppingCart(false)}
+            cartItems={cartItems}
+            setCartItems={setCartItems}
+            totalPrice={totalPrice}
             setTotalPrice={setTotalPrice}
             totalQuantity={totalQuantity}
             setTotalQuantity={setTotalQuantity}

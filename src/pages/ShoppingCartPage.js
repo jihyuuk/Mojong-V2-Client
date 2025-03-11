@@ -4,17 +4,17 @@ import { Button, ListGroup } from "react-bootstrap";
 function ShoppingCartPage({ close, cartItems, setCartItems, totalPrice, totalQuantity }) {
 
     //삭제버튼
-    const clickDelete = (deleteIdx) => {
-        setCartItems(prevItems => prevItems.filter((_, idx) => idx !== deleteIdx));
+    const clickDelete = (deleteId) => {
+        setCartItems(prevItems => prevItems.filter(item => item.id !== deleteId));
     }
 
     //수량 플러스
-    const clickPlus = (plusIdx) => {
+    const clickPlus = (plusId) => {
         setCartItems(prevItems => prevItems.map(
-            (item, idx) => {
-                if(idx !== plusIdx || item.quantity >= 999){
+            item => {
+                if (item.id !== plusId || item.quantity >= 999) {
                     return item;
-                }else{
+                } else {
                     return { ...item, quantity: item.quantity + 1 };
                 }
             }
@@ -22,12 +22,12 @@ function ShoppingCartPage({ close, cartItems, setCartItems, totalPrice, totalQua
     }
 
     //수량 마이너스
-    const clickMinus = (minusIdx) => {
+    const clickMinus = (minusId) => {
         setCartItems(prevItems => prevItems.map(
-            (item, idx) => {
-                if(idx !== minusIdx || item.quantity <= 1){
+            item => {
+                if (item.id !== minusId || item.quantity <= 1) {
                     return item;
-                }else{
+                } else {
                     return { ...item, quantity: item.quantity - 1 };
                 }
             }
@@ -67,7 +67,7 @@ function ShoppingCartPage({ close, cartItems, setCartItems, totalPrice, totalQua
                                         {/* 상품명 */}
                                         <span className='fs-5 fw-semibold text-success me-2'>{index + 1}. {item.name}</span>
                                         {/* 닫기버튼 */}
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16" onClick={() => clickDelete(index)} >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16" onClick={() => clickDelete(item.id)} >
                                             <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
                                         </svg>
                                     </div>
@@ -78,13 +78,13 @@ function ShoppingCartPage({ close, cartItems, setCartItems, totalPrice, totalQua
                                         {/* 수량버튼 */}
                                         <span className='border border-success-subtle rounded-3 p-2 ms-3'>
                                             {/* 빼기 */}
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className={`bi bi-dash ${item.quantity <= 1 ? 'text-secondary' : ''}`} viewBox="0 0 16 16" onClick={() => clickMinus(index)} >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className={`bi bi-dash ${item.quantity <= 1 ? 'text-secondary' : ''}`} viewBox="0 0 16 16" onClick={() => clickMinus(item.id)} >
                                                 <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
                                             </svg>
                                             {/* 수량 */}
                                             <span className='mx-3'>{item.quantity}</span>
                                             {/* 더하기 */}
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className={`bi bi-plus ${item.quantity >= 999 ? 'text-secondary' : ''}`} viewBox="0 0 16 16" onClick={() => clickPlus(index)}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className={`bi bi-plus ${item.quantity >= 999 ? 'text-secondary' : ''}`} viewBox="0 0 16 16" onClick={() => clickPlus(item.id)}>
                                                 <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                                             </svg>
                                         </span>
@@ -122,7 +122,7 @@ function ShoppingCartPage({ close, cartItems, setCartItems, totalPrice, totalQua
                         <div>품목 <span className='fw-semibold'>{cartItems.length}</span> · 수량 <span className='fw-semibold'>{totalQuantity}</span></div>
                         <div className='text-success'>총 합계 <span className='fw-semibold'>{totalPrice.toLocaleString('ko-KR')}</span>원</div>
                     </div>
-                    <Button variant="success" className="fs-5 p-2 px-3 rounded-3 w-100 fw-semibold" disabled={totalPrice <= 0 ? true : false }>
+                    <Button variant="success" className="fs-5 p-2 px-3 rounded-3 w-100 fw-semibold" disabled={totalPrice <= 0 ? true : false}>
                         <div className=''>주문하기</div>
                     </Button>
                 </div>

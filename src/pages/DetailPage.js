@@ -52,7 +52,7 @@ function DetailPage({ item, close, setCartItems }) {
     const addCart = () => {
         setCartItems(prevItems => {
             // 이미 장바구니에 같은 상품이 있는지 확인
-            const existingItemIndex = prevItems.findIndex(preItem => preItem.name === item.name);
+            const existingItemIndex = prevItems.findIndex(preItem => preItem.id === item.id);
 
             // 이미 있는 상품이면 수량만 증가
             if (existingItemIndex !== -1) {
