@@ -3,7 +3,6 @@ import './App.css';
 import MainPage from './pages/MainPage';
 import DetailPage from './pages/DetailPage';
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 import ShoppingCartPage from './pages/ShoppingCartPage';
 import MotionPage from './motions/MotionPage';
 

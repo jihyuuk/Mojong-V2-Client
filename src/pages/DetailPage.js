@@ -38,7 +38,6 @@ function DetailPage({ item, close, setCartItems }) {
 
     //수량 직접 입력
     const handleKeyDown = (e) => {
-        console.log(e.key)
         if (e.key === 'Backspace') {
             setQuantity(parseInt(quantity / 10));
         } else {
@@ -58,7 +57,7 @@ function DetailPage({ item, close, setCartItems }) {
             if (existingItemIndex !== -1) {
                 return prevItems.map((item, idx) =>
                     idx === existingItemIndex
-                        ? { ...item, quantity: item.quantity + quantity }
+                        ? { ...item, quantity: Math.min(item.quantity + quantity, maxQuantity) } //최대 3자리 초과 막기
                         : item
                 );
             }
