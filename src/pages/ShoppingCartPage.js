@@ -1,11 +1,16 @@
 import React from "react";
 import { Button, ListGroup } from "react-bootstrap";
+import { useTost } from "../utils/TostProvider";
 
 function ShoppingCartPage({ close, cartItems, setCartItems, totalPrice, totalQuantity }) {
+
+    //토스트
+    const {showTost} = useTost();
 
     //삭제버튼
     const clickDelete = (deleteId) => {
         setCartItems(prevItems => prevItems.filter(item => item.id !== deleteId));
+        showTost("상품 제거 완료")
     }
 
     //수량 플러스

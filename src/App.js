@@ -5,6 +5,7 @@ import DetailPage from './pages/DetailPage';
 import { useEffect, useState } from 'react';
 import ShoppingCartPage from './pages/ShoppingCartPage';
 import MotionPage from './motions/MotionPage';
+import { TostProvider } from './utils/TostProvider';
 
 function App() {
 
@@ -39,30 +40,35 @@ function App() {
   return (
     <div className="App">
 
-      {/* 메인 페이지 */}
-      <MainPage setSelectedItem={setSelectedItem} setShowShoppingCart={setShowShoppingCart} totalPrice={totalPrice} />
+      {/* 토스트 기능 context */}
+      <TostProvider>
 
-      {/* 아이템 상세 페이지 */}
-      {selectedItem && (
-        <MotionPage>
-          <DetailPage item={selectedItem} close={() => setSelectedItem(null)} setCartItems={setCartItems} />
-        </MotionPage>
-      )}
+        {/* 메인 페이지 */}
+        <MainPage setSelectedItem={setSelectedItem} setShowShoppingCart={setShowShoppingCart} totalPrice={totalPrice} />
 
-      {/* 장바구니 페이지 */}
-      {showShoppingCart && (
-        <MotionPage>
-          <ShoppingCartPage
-            close={() => setShowShoppingCart(false)}
-            cartItems={cartItems}
-            setCartItems={setCartItems}
-            totalPrice={totalPrice}
-            setTotalPrice={setTotalPrice}
-            totalQuantity={totalQuantity}
-            setTotalQuantity={setTotalQuantity}
-          />
-        </MotionPage>
-      )}
+        {/* 아이템 상세 페이지 */}
+        {selectedItem && (
+          <MotionPage>
+            <DetailPage item={selectedItem} close={() => setSelectedItem(null)} setCartItems={setCartItems} />
+          </MotionPage>
+        )}
+
+        {/* 장바구니 페이지 */}
+        {showShoppingCart && (
+          <MotionPage>
+            <ShoppingCartPage
+              close={() => setShowShoppingCart(false)}
+              cartItems={cartItems}
+              setCartItems={setCartItems}
+              totalPrice={totalPrice}
+              setTotalPrice={setTotalPrice}
+              totalQuantity={totalQuantity}
+              setTotalQuantity={setTotalQuantity}
+            />
+          </MotionPage>
+        )}
+        
+      </TostProvider>
 
     </div>
   );

@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
+import { useTost } from '../utils/TostProvider';
 
 function DetailPage({ item, close, setCartItems }) {
+
+    //토스트
+    const { showTost } = useTost();
 
     //재고
     const stock = item.quantity;
@@ -65,6 +69,7 @@ function DetailPage({ item, close, setCartItems }) {
             // 없는 상품이면 새로 추가
             return [...prevItems, { ...item, quantity: quantity }];
         });
+        showTost("장바구니 추가 완료");
         close(); // 상세페이지 닫기
     };
 
