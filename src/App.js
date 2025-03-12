@@ -5,6 +5,7 @@ import DetailPage from './pages/DetailPage';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import ShoppingCartPage from './pages/ShoppingCartPage';
+import MotionPage from './motions/MotionPage';
 
 function App() {
 
@@ -44,24 +45,14 @@ function App() {
 
       {/* 아이템 상세 페이지 */}
       {selectedItem && (
-        <motion.div
-          initial={{ x: "100%" }}  // 처음에 화면 오른쪽에 위치
-          animate={{ x: 0 }}       // 왼쪽으로 이동하여 화면에 표시
-          transition={{ duration: 0.2 }}
-          className='z-1 position-absolute top-0 start-0 w-100 h-100 bg-white'
-        >
+        <MotionPage>
           <DetailPage item={selectedItem} close={() => setSelectedItem(null)} setCartItems={setCartItems} />
-        </motion.div>
+        </MotionPage>
       )}
 
       {/* 장바구니 페이지 */}
       {showShoppingCart && (
-        <motion.div
-          initial={{ x: "100%" }}  // 처음에 화면 오른쪽에 위치
-          animate={{ x: 0 }}       // 왼쪽으로 이동하여 화면에 표시
-          transition={{ duration: 0.2 }}
-          className='z-1 position-absolute top-0 start-0 w-100 h-100 bg-white'
-        >
+        <MotionPage>
           <ShoppingCartPage
             close={() => setShowShoppingCart(false)}
             cartItems={cartItems}
@@ -71,8 +62,7 @@ function App() {
             totalQuantity={totalQuantity}
             setTotalQuantity={setTotalQuantity}
           />
-
-        </motion.div>
+        </MotionPage>
       )}
 
     </div>
