@@ -98,6 +98,18 @@ function MainPage({ setSelectedItem, setShowShoppingCart, totalPrice }) {
         };
     }, [throttledHandleScroll]);
 
+
+    //검색기능================================
+    const [searchValue, setSearchValue] = useState(''); //검색어
+    const [showClearBtn, setShowClearBtn] = useState(false); //클리어버튼
+
+    //검색어가 있을때만 클리어 버튼 보여주기
+    useEffect(() => {
+        const res = searchValue.length > 0 ? true : false;
+        setShowClearBtn(res);
+    }, [searchValue])
+
+
     return (
         // 메인페이지
         <div className="MainPage d-flex flex-column h-100 text-center">
@@ -107,7 +119,24 @@ function MainPage({ setSelectedItem, setShowShoppingCart, totalPrice }) {
 
                 {/* 검색창 */}
                 <div className='px-2 pt-3'>
-                    <Form.Control size="lg" id='searchBar' type="text" className='ps-4 pe-5 rounded-5 border-2 border-success-subtle' placeholder="🔍 검색하기" />
+                    <div className='position-relative'>
+                        <Form.Control size="lg" id='searchBar' type="text"
+                            className='ps-4 pe-5 rounded-5 border-2 border-success-subtle'
+                            placeholder="🔍 검색하기"
+                            value={searchValue}
+                            onChange={(e) => setSearchValue(e.target.value.trim())}
+                        />
+
+                        {/* 클리어버튼 */}
+                        {showClearBtn &&
+                            <div className='position-absolute top-50 end-0 translate-middle-y me-3' onClick={()=> setSearchValue('')}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-x my-auto h-100" viewBox="0 0 16 16">
+                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                </svg>
+                            </div>
+                        }
+
+                    </div>
                 </div>
 
                 {/* 카테고리 탭 */}
