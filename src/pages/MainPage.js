@@ -1,4 +1,4 @@
-import { Button, ListGroup, Stack } from 'react-bootstrap';
+import { Button, Form, ListGroup, Stack } from 'react-bootstrap';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import menu from "./dummyData.json";
 import { throttle } from 'lodash';
@@ -105,13 +105,13 @@ function MainPage({ setSelectedItem, setShowShoppingCart, totalPrice }) {
             {/* 헤더 */}
             <div>
 
-                {/* 로고 */}
-                <div className='pt-1'>
-                    <img src="/로고2.png" alt="그린아그로 로고" style={{ maxWidth: "100px" }} />
+                {/* 검색창 */}
+                <div className='px-2 pt-3'>
+                    <Form.Control size="lg" id='searchBar' type="text" className='ps-4 pe-5 rounded-5 border-2 border-success-subtle' placeholder="🔍 검색하기" />
                 </div>
 
                 {/* 카테고리 탭 */}
-                <Stack direction="horizontal" gap={3} className='overflow-x-auto text-nowrap p-2'>
+                <Stack direction="horizontal" gap={3} className='overflow-x-auto text-nowrap p-2 border-bottom'>
                     {menu.categories.map((category, index) => {
                         return (
                             <div
