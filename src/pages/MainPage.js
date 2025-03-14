@@ -1,4 +1,4 @@
-import { Button, Form, ListGroup, Stack } from 'react-bootstrap';
+import { Button, Form, ListGroup, Placeholder, Spinner, Stack } from 'react-bootstrap';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import menu from "./dummyData.json";
 import { throttle } from 'lodash';
@@ -65,7 +65,7 @@ function MainPage({ setSelectedItem, setShowShoppingCart, totalPrice }) {
         if (scrollingRef.current) return;
 
         const containerTop = contentRef.current?.getBoundingClientRect().top || 0;
-        const offset = containerTop + 50;
+        const offset = containerTop + 30;
 
         for (let i = categoryCount - 1; i >= 0; i--) {
             const sectionTop = sectionRefs.current[i]?.getBoundingClientRect().top || 0;
@@ -238,8 +238,12 @@ function MainPage({ setSelectedItem, setShowShoppingCart, totalPrice }) {
                             {category.items.map((item) => {
                                 return (
                                     <ListGroup.Item className='d-flex gap-3' onClick={() => setSelectedItem(item)}>
-                                        <img src={item.photo} style={{ maxWidth: '100px' }} className='rounded-4 my-auto' />
+                                        {/* 사진 */}
+                                        <div style={{height:'100px', width:'100px'}} className='border rounded-4'>
+                                            <img src={item.photo} className='rounded-4 my-auto' style={{width:'100px'}}/>
+                                        </div>
 
+                                        {/* 텍스트 */}
                                         <div>
                                             <div className="fw-bold fs-4">{item.name}</div>
                                             <div className='mt-1 text-secondary'>{item.description}</div>
