@@ -145,8 +145,9 @@ function MainPage({ setSelectedItem, setShowShoppingCart, totalPrice }) {
 
             {/* 헤더 */}
             <header>
+
                 {/* 검색창 */}
-                <div className='px-2 pt-3'>
+                <div className='px-2 pt-3 pb-1'>
                     <div className='position-relative'>
                         <Form.Control size="lg" id='searchBar' type="text"
                             ref={inputRef}
@@ -170,41 +171,43 @@ function MainPage({ setSelectedItem, setShowShoppingCart, totalPrice }) {
 
                 {/* 검색결과 */}
                 {showSearchField &&
-                    <div className='position-absolute d-flex flex-column pt-1 h-100 w-100 z-1'>
-                        {/* 검색결과들 */}
-                        <div className='bg-white overflow-y-auto'>
-                            <ListGroup>
-                                <div className='text-secondary fw-mefium d-flex justify-content-between'>
-                                    <div className='p-2 ps-3'>
-                                        검색 결과 : {searchResults.length}개</div>
-                                    <div className='p-2 pe-3' onClick={cancleSearch}>닫기</div>
-                                </div>
-                                {searchResults.map(item => {
-                                    return (
-                                        <ListGroup.Item className='d-flex gap-3' onClick={() => setSelectedItem(item)}>
-                                            <img src={item.photo} style={{ maxWidth: '100px' }} className='rounded-4 my-auto' />
+                    <div className='position-absolute w-100 h-100 z-1'>
 
-                                            <div>
-                                                <div className="fw-bold fs-4">{item.name}</div>
-                                                <div className='mt-1 text-secondary'>{item.description}</div>
-                                                <div className='mt-2 fs-5 fw-semibold'>{item.price.toLocaleString('ko-KR')}원</div>
-                                            </div>
-                                        </ListGroup.Item>
-                                    )
-                                })}
-                            </ListGroup>
-
+                        {/* 검색 수량 // 취소버튼 */}
+                        <div className='text-secondary py-1 fw-mefium d-flex justify-content-between bg-white'>
+                            <div className='p-2 ps-3'>
+                                검색 결과 : {searchResults.length}개</div>
+                            <div className='p-2 pe-3' onClick={cancleSearch}>닫기</div>
                         </div>
 
-                        {/* 남는 부분 배경채우기 */}
-                        <div className='bg-secondary bg-opacity-50 flex-grow-1' onClick={cancleSearch}></div>
+                        <div className='position-absolute d-flex flex-column pt-1 h-100 w-100 overflow-y-auto ' onScroll={() => inputRef.current?.blur()}>
+                            {/* 검색결과 리스트*/}
+                                <ListGroup>
+                                    {searchResults.map(item => {
+                                        return (
+                                            <ListGroup.Item className='d-flex gap-3' onClick={() => setSelectedItem(item)}>
+                                                <img src={item.photo} style={{ maxWidth: '100px' }} className='rounded-4 my-auto' />
 
+                                                <div>
+                                                    <div className="fw-bold fs-4">{item.name}</div>
+                                                    <div className='mt-1 text-secondary'>{item.description}</div>
+                                                    <div className='mt-2 fs-5 fw-semibold'>{item.price.toLocaleString('ko-KR')}원</div>
+                                                </div>
+                                            </ListGroup.Item>
+                                        )
+                                    })}
+                                </ListGroup>
+
+                            {/* 남는 부분 배경채우기 */}
+                            <div className='bg-secondary bg-opacity-50 flex-grow-1' style={{ minHeight: '300px' }} onClick={cancleSearch}></div>
+
+                        </div>
                     </div>
                 }
 
 
                 {/* 카테고리 탭 */}
-                <Stack direction="horizontal" gap={3} className='overflow-x-auto text-nowrap p-2 border-bottom'>
+                <Stack direction="horizontal" gap={3} className='overflow-x-auto text-nowrap p-2 pt-0 border-bottom'>
                     {menu.categories.map((category, index) => {
                         return (
                             <div
@@ -251,7 +254,6 @@ function MainPage({ setSelectedItem, setShowShoppingCart, totalPrice }) {
                 })}
 
                 <div style={{ height: "300px" }}>
-
                 </div>
 
             </main>
