@@ -24,10 +24,12 @@ export function TostProvider({ children }) {
 
             {/* 토스트 UI */}
             {tostState && (
-                <div className="position-absolute top-50 start-50 translate-middle z-3 bg-secondary px-3 py-2 rounded-pill text-nowrap opacity-75">
-                    <span className="fs-6 text-white fw-medium">
-                        {tostMsg}
-                    </span>
+                <div className="position-absolute bottom-0 start-50 translate-middle-x z-3"  style={{marginBottom:"5rem"}}>
+                    <div className="bg-secondary px-3 py-2 rounded-pill text-nowrap">
+                        <span className="fs-6 text-white fw-medium">
+                            {tostMsg}
+                        </span>
+                    </div>
                 </div>
             )}
         </TostContext.Provider>
