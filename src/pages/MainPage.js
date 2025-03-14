@@ -101,43 +101,107 @@ function MainPage({ setSelectedItem, setShowShoppingCart, totalPrice }) {
 
     //검색기능================================
     const [searchValue, setSearchValue] = useState(''); //검색어
+    const [searchResults, setSearchResults] = useState([]);//검색결과
+    const [showSearchField, setShowSearchField] = useState(false);//검색결과 피드
     const [showClearBtn, setShowClearBtn] = useState(false); //클리어버튼
+    const inputRef = useRef(null);
 
-    //검색어가 있을때만 클리어 버튼 보여주기
+    //검색창 변화시
     useEffect(() => {
-        const res = searchValue.length > 0 ? true : false;
-        setShowClearBtn(res);
+        //1.검색어가 있을때만 클리어 버튼 보여주기
+        //2.아이템 찾기
+
+        if (searchValue.trim() === '') {
+            setSearchResults([]);
+            setShowClearBtn(false);
+            return;
+        }
+
+        setShowClearBtn(true);
+        setSearchResults(
+            menu.categories.flatMap(category =>
+                category.items.filter(item => item.name.includes(searchValue))
+            ));
+
+        searchResults.map(item => console.log(item.name))
+
     }, [searchValue])
 
+    //검색 취소버튼
+    const cancleSearch = () => {
+        setSearchValue('');
+        setShowSearchField(false);
+    }
+
+    //x 버튼 클릭시
+    const handleClear = () => {
+        setSearchValue('');
+        inputRef.current?.focus();
+    }
 
     return (
         // 메인페이지
-        <div className="MainPage d-flex flex-column h-100 text-center">
+        <div className="MainPage d-flex flex-column h-100">
 
             {/* 헤더 */}
-            <div>
-
+            <header>
                 {/* 검색창 */}
                 <div className='px-2 pt-3'>
                     <div className='position-relative'>
                         <Form.Control size="lg" id='searchBar' type="text"
+                            ref={inputRef}
                             className='ps-4 pe-5 rounded-5 border-2 border-success-subtle'
                             placeholder="🔍 검색하기"
                             value={searchValue}
                             onChange={(e) => setSearchValue(e.target.value.trim())}
+                            onClick={() => setShowSearchField(true)}
                         />
 
                         {/* 클리어버튼 */}
                         {showClearBtn &&
-                            <div className='position-absolute top-50 end-0 translate-middle-y me-3' onClick={()=> setSearchValue('')}>
+                            <div className='position-absolute top-50 end-0 translate-middle-y me-3' onClick={handleClear}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-x my-auto h-100" viewBox="0 0 16 16">
                                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
                                 </svg>
                             </div>
                         }
-
                     </div>
                 </div>
+
+                {/* 검색결과 */}
+                {showSearchField &&
+                    <div className='position-absolute d-flex flex-column pt-1 h-100 w-100 z-1'>
+                        {/* 검색결과들 */}
+                        <div className='bg-white overflow-y-auto'>
+                            <ListGroup>
+                                <div className='text-secondary fw-mefium d-flex justify-content-between'>
+                                    <div className='p-2 ps-3'>
+                                        검색 결과 : {searchResults.length}개</div>
+                                    <div className='p-2 pe-3' onClick={cancleSearch}>닫기</div>
+                                </div>
+                                {searchResults.map(item => {
+                                    return (
+                                        <ListGroup.Item className='d-flex gap-3' onClick={() => setSelectedItem(item)}>
+                                            <img src={item.photo} style={{ maxWidth: '100px' }} className='rounded-4 my-auto' />
+
+                                            <div>
+                                                <div className="fw-bold fs-4">{item.name}</div>
+                                                <div className='mt-1 text-secondary'>{item.description}</div>
+                                                <div className='mt-2 fs-5 fw-semibold'>{item.price.toLocaleString('ko-KR')}원</div>
+                                            </div>
+                                        </ListGroup.Item>
+                                    )
+                                })}
+                            </ListGroup>
+
+                        </div>
+
+                        {/* 남는 부분 배경채우기 */}
+                        <div className='bg-secondary bg-opacity-50 flex-grow-1' onClick={cancleSearch}></div>
+
+                    </div>
+                }
+
 
                 {/* 카테고리 탭 */}
                 <Stack direction="horizontal" gap={3} className='overflow-x-auto text-nowrap p-2 border-bottom'>
@@ -156,10 +220,10 @@ function MainPage({ setSelectedItem, setShowShoppingCart, totalPrice }) {
                     })}
                 </Stack>
 
-            </div>
+            </header>
 
             {/* 콘텐츠 */}
-            <div id='content' ref={contentRef} className='flex-grow-1 overflow-y-auto text-start bg-secondary-subtle'>
+            <main id='content' ref={contentRef} className='flex-grow-1 overflow-y-auto bg-secondary-subtle'>
 
                 {menu.categories.map((category, index) => {
                     return (
@@ -190,15 +254,15 @@ function MainPage({ setSelectedItem, setShowShoppingCart, totalPrice }) {
 
                 </div>
 
-            </div>
+            </main>
 
             {/* 푸터 */}
             {totalPrice > 0 &&
-                <div className="p-2 pb-3 border-top">
+                <footer className="p-2 pb-3 border-top">
                     <Button variant="success" className="w-100 fs-5 fw-semibold p-2 rounded-4" onClick={() => setShowShoppingCart(true)}>
                         {totalPrice.toLocaleString('ko-KR')}원 <span className='fw-medium'>· 장바구니</span>
                     </Button>
-                </div>
+                </footer>
             }
         </div>
     );
