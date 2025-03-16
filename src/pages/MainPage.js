@@ -4,7 +4,7 @@ import menu from "./dummyData.json";
 import { throttle } from 'lodash';
 import { Link } from 'react-router-dom';
 
-function MainPage({ setShowShoppingCart, totalPrice }) {
+function MainPage({ totalPrice }) {
 
     //현재 활성화된 카테고리
     const [activeCat, setActiveCat] = useState(0);
@@ -270,9 +270,11 @@ function MainPage({ setShowShoppingCart, totalPrice }) {
             {/* 푸터 */}
             {totalPrice > 0 &&
                 <footer className="p-2 pb-3 border-top">
-                    <Button variant="success" className="w-100 fs-5 fw-semibold p-2 rounded-4" onClick={() => setShowShoppingCart(true)}>
-                        {totalPrice.toLocaleString('ko-KR')}원 <span className='fw-medium'>· 장바구니</span>
-                    </Button>
+                    <Link to="/shoppingCart">
+                        <Button variant="success" className="w-100 fs-5 fw-semibold p-2 rounded-4">
+                            {totalPrice.toLocaleString('ko-KR')}원 <span className='fw-medium'>· 장바구니</span>
+                        </Button>
+                    </Link>
                 </footer>
             }
         </div>

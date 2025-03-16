@@ -4,14 +4,10 @@ import MainPage from './pages/MainPage';
 import DetailPage from './pages/DetailPage';
 import { useEffect, useState } from 'react';
 import ShoppingCartPage from './pages/ShoppingCartPage';
-import MotionPage from './motions/MotionPage';
 import { TostProvider } from './utils/TostProvider';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
-
-  //장바구니 페이지 출력 여부
-  const [showShoppingCart, setShowShoppingCart] = useState(false);
 
   //장바구니에 담긴 아이템들
   const [cartItems, setCartItems] = useState([]);
@@ -31,8 +27,6 @@ function App() {
     //값 업데이트
     setTotalPrice(calPrice);
     setTotalQuantity(calQuantity);
-    //장바구니 담긴거 없을때 닫기
-    if (calPrice === 0) setShowShoppingCart(false);
   }, [cartItems]);
 
   return (
@@ -41,19 +35,14 @@ function App() {
         <TostProvider>{/* 토스트 기능 context */}
 
           {/* 메인 페이지 */}
-          <MainPage setShowShoppingCart={setShowShoppingCart} totalPrice={totalPrice} />
+          <MainPage totalPrice={totalPrice} />
 
           <Routes>
             {/* 아이템 상세 페이지 */}
             <Route path="/detail/:id" element={<DetailPage setCartItems={setCartItems} />} />
-          </Routes>
-
-
-          {/* 장바구니 페이지 */}
-          {showShoppingCart && (
-            <MotionPage>
+            {/* 장바구니 페이지 */}
+            <Route path="/shoppingCart" element={
               <ShoppingCartPage
-                close={() => setShowShoppingCart(false)}
                 cartItems={cartItems}
                 setCartItems={setCartItems}
                 totalPrice={totalPrice}
@@ -61,8 +50,8 @@ function App() {
                 totalQuantity={totalQuantity}
                 setTotalQuantity={setTotalQuantity}
               />
-            </MotionPage>
-          )}
+            } />
+          </Routes>
 
         </TostProvider>
       </BrowserRouter>
