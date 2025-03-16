@@ -121,7 +121,7 @@ function MainPage({ totalPrice }) {
         setShowClearBtn(true);
         setSearchResults(
             menu.categories.flatMap(category =>
-                category.items.filter(item => item.name.includes(searchValue))
+                category.items.filter(item => item.name.includes(searchValue.trim()))
             ));
 
         searchResults.map(item => console.log(item.name))
@@ -155,7 +155,7 @@ function MainPage({ totalPrice }) {
                             className='ps-4 pe-5 rounded-5 border-2 border-success-subtle'
                             placeholder="🔍 검색하기"
                             value={searchValue}
-                            onChange={(e) => setSearchValue(e.target.value.trim())}
+                            onChange={(e) => setSearchValue(e.target.value)}
                             onClick={() => setShowSearchField(true)}
                         />
 
