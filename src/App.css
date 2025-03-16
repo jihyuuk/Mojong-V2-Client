@@ -23,3 +23,9 @@
     color:#198754;
     border-bottom: 3px solid #198754;
   }
+  
+  /* link의 기본 css 제거 */
+  a{
+    text-decoration: none;
+    color: black;
+  }

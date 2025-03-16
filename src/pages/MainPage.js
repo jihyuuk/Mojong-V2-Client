@@ -2,8 +2,9 @@ import { Button, Form, ListGroup, Placeholder, Spinner, Stack } from 'react-boot
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import menu from "./dummyData.json";
 import { throttle } from 'lodash';
+import { Link } from 'react-router-dom';
 
-function MainPage({ setSelectedItem, setShowShoppingCart, totalPrice }) {
+function MainPage({ setShowShoppingCart, totalPrice }) {
 
     //현재 활성화된 카테고리
     const [activeCat, setActiveCat] = useState(0);
@@ -182,10 +183,11 @@ function MainPage({ setSelectedItem, setShowShoppingCart, totalPrice }) {
 
                         <div className='position-absolute d-flex flex-column pt-1 h-100 w-100 overflow-y-auto ' onScroll={() => inputRef.current?.blur()}>
                             {/* 검색결과 리스트*/}
-                                <ListGroup>
-                                    {searchResults.map(item => {
-                                        return (
-                                            <ListGroup.Item className='d-flex gap-3' onClick={() => setSelectedItem(item)}>
+                            <ListGroup>
+                                {searchResults.map(item => {
+                                    return (
+                                        <Link to={`/detail/${item.id}`}>
+                                            <ListGroup.Item className='d-flex gap-3'>
                                                 <img src={item.photo} style={{ maxWidth: '100px' }} className='rounded-4 my-auto' />
 
                                                 <div>
@@ -194,9 +196,10 @@ function MainPage({ setSelectedItem, setShowShoppingCart, totalPrice }) {
                                                     <div className='mt-2 fs-5 fw-semibold'>{item.price.toLocaleString('ko-KR')}원</div>
                                                 </div>
                                             </ListGroup.Item>
-                                        )
-                                    })}
-                                </ListGroup>
+                                        </Link>
+                                    )
+                                })}
+                            </ListGroup>
 
                             {/* 남는 부분 배경채우기 */}
                             <div className='bg-secondary bg-opacity-50 flex-grow-1' style={{ minHeight: '300px' }} onClick={cancleSearch}></div>
@@ -237,19 +240,21 @@ function MainPage({ setSelectedItem, setShowShoppingCart, totalPrice }) {
                             {/* 카테고리 아이템 */}
                             {category.items.map((item) => {
                                 return (
-                                    <ListGroup.Item className='d-flex gap-3' onClick={() => setSelectedItem(item)}>
-                                        {/* 사진 */}
-                                        <div style={{height:'100px', width:'100px'}} className='border rounded-4'>
-                                            <img src={item.photo} className='rounded-4 my-auto' style={{width:'100px'}}/>
-                                        </div>
+                                    <Link to={`/detail/${item.id}`}>
+                                        <ListGroup.Item className='d-flex gap-3'>
+                                            {/* 사진 */}
+                                            <div style={{ height: '100px', width: '100px' }} className='border rounded-4'>
+                                                <img src={item.photo} className='rounded-4 my-auto' style={{ width: '100px' }} />
+                                            </div>
 
-                                        {/* 텍스트 */}
-                                        <div>
-                                            <div className="fw-bold fs-4">{item.name}</div>
-                                            <div className='mt-1 text-secondary'>{item.description}</div>
-                                            <div className='mt-2 fs-5 fw-semibold'>{item.price.toLocaleString('ko-KR')}원</div>
-                                        </div>
-                                    </ListGroup.Item>
+                                            {/* 텍스트 */}
+                                            <div>
+                                                <div className="fw-bold fs-4">{item.name}</div>
+                                                <div className='mt-1 text-secondary'>{item.description}</div>
+                                                <div className='mt-2 fs-5 fw-semibold'>{item.price.toLocaleString('ko-KR')}원</div>
+                                            </div>
+                                        </ListGroup.Item>
+                                    </Link>
                                 );
                             })}
 
