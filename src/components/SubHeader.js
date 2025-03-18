@@ -6,7 +6,7 @@ function SubHeader({ title }) {
     const navigate = useNavigate();
 
     return (
-        <header className='p-2 border-bottom border-success-subtle position-relative'>
+        <header className='p-2 border-2 border-bottom border-success-subtle shadow-sm position-relative'>
 
             {/* 뒤로가기 버튼 */}
             <div className='p-1' onClick={() => navigate(-1)}>
