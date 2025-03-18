@@ -365,6 +365,44 @@
                     "description": "달콤하고 매콤한 특제 소스로 버무린 양념 치킨."
                 }
             ]
+        },
+        {
+            "categoryId": 10,
+            "categoryName": "사진 없는 것",
+            "items": [
+                {
+                    "id": 40,
+                    "name": "노각오이",
+                    "photo": "https://picsum.photos/id/40/100/100",
+                    "price": 17000,
+                    "quantity": 5,
+                    "description": ""
+                },
+                {
+                    "id": 41,
+                    "name": "노각오이",
+                    "photo": "",
+                    "price": 17000,
+                    "quantity": 5,
+                    "description": "바삭하고 촉촉한 전통 후라이드 치킨."
+                },
+                {
+                    "id": 42,
+                    "name": "오이",
+                    "photo": "",
+                    "price": 18000,
+                    "quantity": 5,
+                    "description": "달콤하고 매콤한 특제 소스로 버무린 양념 치킨."
+                },
+                {
+                    "id": 43,
+                    "name": "가지",
+                    "photo": "",
+                    "price": 18000,
+                    "quantity": 5,
+                    "description": ""
+                }
+            ]
         }
     ]
 }
