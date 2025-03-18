@@ -3,6 +3,8 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import menu from "./dummyData.json";
 import { throttle } from 'lodash';
 import { Link } from 'react-router-dom';
+import ItemList from '../components/ItemList';
+import SearchList from '../components/SearchList';
 
 function MainPage({ totalPrice }) {
 
@@ -181,25 +183,12 @@ function MainPage({ totalPrice }) {
                             <div className='p-2 pe-3' onClick={cancleSearch}>닫기</div>
                         </div>
 
-                        <div className='position-absolute d-flex flex-column pt-1 h-100 w-100 overflow-y-auto ' onScroll={() => inputRef.current?.blur()}>
+                        <div className='position-absolute d-flex flex-column h-100 w-100 overflow-y-auto' onScroll={() => inputRef.current?.blur()}>
                             {/* 검색결과 리스트*/}
-                            <ListGroup>
-                                {searchResults.map(item => {
-                                    return (
-                                        <Link to={`/detail/${item.id}`}>
-                                            <ListGroup.Item className='d-flex gap-3'>
-                                                <img src={item.photo} style={{ maxWidth: '100px' }} className='rounded-4 my-auto' />
-
-                                                <div>
-                                                    <div className="fw-bold fs-4">{item.name}</div>
-                                                    <div className='mt-1 text-secondary'>{item.description}</div>
-                                                    <div className='mt-2 fs-5 fw-semibold'>{item.price.toLocaleString('ko-KR')}원</div>
-                                                </div>
-                                            </ListGroup.Item>
-                                        </Link>
-                                    )
-                                })}
-                            </ListGroup>
+                            <div className='bg-white shadow-sm'>
+                                {/* {searchResults.map(item => <ItemList item={item}/>)} */}
+                                {searchResults.map((item) => <SearchList item={item} />)}
+                            </div>
 
                             {/* 남는 부분 배경채우기 */}
                             <div className='bg-secondary bg-opacity-50 flex-grow-1' style={{ minHeight: '300px' }} onClick={cancleSearch}></div>
@@ -210,7 +199,7 @@ function MainPage({ totalPrice }) {
 
 
                 {/* 카테고리 탭 */}
-                <Stack direction="horizontal" gap={3} className='overflow-x-auto text-nowrap p-2 pt-0 border-bottom'>
+                <Stack direction="horizontal" gap={3} className='overflow-x-auto text-nowrap px-2 pt-0 pb-1 border-bottom'>
                     {menu.categories.map((category, index) => {
                         return (
                             <div
@@ -233,38 +222,20 @@ function MainPage({ totalPrice }) {
 
                 {menu.categories.map((category, index) => {
                     return (
-                        // 카테고리명
-                        <ListGroup id={`section${index}`} key={category.categoryName} className='mb-4 bg-white rounded-0' ref={(el) => (sectionRefs.current[index] = el)}>
-                            <div className='fs-3 fw-bold p-2 ps-3'>{category.categoryName}</div>
+                        <div id={`section${index}`} key={category.categoryName} className='mb-4 bg-white shadow-sm' ref={(el) => (sectionRefs.current[index] = el)}>
 
-                            {/* 카테고리 아이템 */}
-                            {category.items.map((item) => {
-                                return (
-                                    <Link to={`/detail/${item.id}`}>
-                                        <ListGroup.Item className='d-flex gap-3'>
-                                            {/* 사진 */}
-                                            <div style={{ height: '100px', width: '100px' }} className='border rounded-4'>
-                                                <img src={item.photo} className='rounded-4 my-auto' style={{ width: '100px' }} />
-                                            </div>
+                            {/* 카테고리 명 */}
+                            <div className='fs-2 fw-bold p-3 pb-0'>{category.categoryName}</div>
 
-                                            {/* 텍스트 */}
-                                            <div>
-                                                <div className="fw-bold fs-4">{item.name}</div>
-                                                <div className='mt-1 text-secondary'>{item.description}</div>
-                                                <div className='mt-2 fs-5 fw-semibold'>{item.price.toLocaleString('ko-KR')}원</div>
-                                            </div>
-                                        </ListGroup.Item>
-                                    </Link>
-                                );
-                            })}
+                            {/* 해당 아이템들 */}
+                            {category.items.map((item) => <ItemList item={item} />)}
 
-                        </ListGroup>
+                        </div>
                     );
                 })}
 
                 <div style={{ height: "300px" }}>
                 </div>
-
             </main>
 
             {/* 푸터 */}
