@@ -1,27 +1,60 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useTost } from "../utils/TostProvider";
 
 function ItemList({ item }) {
 
+    const navigate = useNavigate(); //라우터
+    const { showTost } = useTost(); //토스트
+
+    const click = () => {
+
+        //품절시 상품상세 이동 x
+        if (item.stock <= 0) {
+            showTost("품절된 상품입니다.");
+            return;
+        } 
+          
+        //상품상세로 이동
+        navigate(`/detail/${item.id}`);
+    };
+
     return (
-        <Link to={`/detail/${item.id}`}>
-            <div className='d-flex gap-3 align-items-center p-3 border-bottom'>
+        <div onClick={click}>
+            <div className="d-flex gap-3 align-items-center p-3 border-bottom">
 
                 {/* 텍스트 */}
-                <div className='flex-grow-1'>
-                    <div className="fs-5 fw-semibold">{item.name}</div>
-                    <div className='mt-1 text-secondary'>{item.description}</div>
-                    <div className='mt-2 fs-6 fw-semibold'>{item.price.toLocaleString('ko-KR')}원</div>
+                <div className={`flex-grow-1 ${item.stock <= 0 ? "text-secondary" : ""}`}>
+                    <div className="fs-5 fw-semibold">{item.stock <= 0 ? "(품절)" : ""} {item.name}</div>
+                    <div className="mt-1 text-secondary">{item.description}</div>
+                    <div className="mt-2 fs-6 fw-semibold">{item.price.toLocaleString('ko-KR')}원</div>
                 </div>
 
                 {/* 사진 */}
-                {item.photo &&
-                    <div style={{ height: '100px', width: '100px' }} className='border rounded-4'>
-                        <img src={item.photo} className='rounded-3 my-auto' style={{ width: '100px' }} />
+                {item.photo && (
+                    <div
+                        style={{ height: "100px", width: "100px" }}
+                        className="border rounded-3 position-relative overflow-hidden flex-shrink-0"
+                    >
+                        {/* 품절시 설정 */}
+                        {item.stock <= 0 && (
+                            <div className="position-absolute top-0 start-0 w-100 h-100 bg-secondary bg-opacity-75 d-flex align-items-center justify-content-center">
+                                <div className="text-white fw-semibold fs-5">품절</div>
+                            </div>
+                        )}
+
+                        {/* 상품 이미지 */}
+                        <img src={item.photo}
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "cover",
+                            }}
+                        />
                     </div>
-                }
+                )}
             </div>
-        </Link>
+        </div>
     );
 }
 
