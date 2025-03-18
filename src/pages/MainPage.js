@@ -1,12 +1,16 @@
-import { Button, Form, ListGroup, Placeholder, Spinner, Stack } from 'react-bootstrap';
+import { Form, Stack } from 'react-bootstrap';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import menu from "./dummyData.json";
 import { throttle } from 'lodash';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ItemList from '../components/ItemList';
 import SearchList from '../components/SearchList';
+import Footer from '../components/Footer';
 
 function MainPage({ totalPrice }) {
+
+    //리액트 라우터
+    const navigate = useNavigate();
 
     //현재 활성화된 카테고리
     const [activeCat, setActiveCat] = useState(0);
@@ -239,15 +243,12 @@ function MainPage({ totalPrice }) {
             </main>
 
             {/* 푸터 */}
-            {totalPrice > 0 &&
-                <footer className="p-2 pb-3 border-top">
-                    <Link to="/shoppingCart">
-                        <Button variant="success" className="w-100 fs-5 fw-semibold p-2 rounded-4">
-                            {totalPrice.toLocaleString('ko-KR')}원 <span className='fw-medium'>· 장바구니</span>
-                        </Button>
-                    </Link>
-                </footer>
-            }
+            <Footer
+                value={`${totalPrice.toLocaleString('ko-KR')}원 · 장바구니`}
+                show={totalPrice > 0}
+                onClick={() => navigate('/shoppingCart')}
+            />
+
         </div>
     );
 }

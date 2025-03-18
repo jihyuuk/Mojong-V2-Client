@@ -1,9 +1,10 @@
 import React from "react";
-import { Button, ListGroup } from "react-bootstrap";
+import { ListGroup } from "react-bootstrap";
 import { useTost } from "../utils/TostProvider";
 import SubHeader from "../components/SubHeader";
 import MotionPage from "../motions/MotionPage";
 import { useNavigate } from "react-router-dom";
+import Footer from "../components/Footer";
 
 function ShoppingCartPage({ cartItems, setCartItems, totalPrice, totalQuantity }) {
 
@@ -15,7 +16,7 @@ function ShoppingCartPage({ cartItems, setCartItems, totalPrice, totalQuantity }
 
     //삭제버튼
     const clickDelete = (deleteId) => {
-        if(cartItems.length <= 1) navigate(-1);
+        if (cartItems.length <= 1) navigate(-1);
         setCartItems(prevItems => prevItems.filter(item => item.id !== deleteId));
         showTost("상품 제거 완료")
     }
@@ -118,17 +119,16 @@ function ShoppingCartPage({ cartItems, setCartItems, totalPrice, totalQuantity }
 
 
                 {/* 푸터 */}
-                <footer className='pb-3'>
-                    <div className='w-100 p-2 pt-0' >
-                        <div className='p-2 d-flex justify-content-between text-secondary'>
-                            <div>품목 <span className='fw-semibold'>{cartItems.length}</span> · 수량 <span className='fw-semibold'>{totalQuantity}</span></div>
-                            <div className='text-success'>총 합계 <span className='fw-semibold'>{totalPrice.toLocaleString('ko-KR')}</span>원</div>
-                        </div>
-                        <Button variant="success" className="fs-5 p-2 px-3 rounded-3 w-100 fw-semibold" disabled={totalPrice <= 0 ? true : false}>
-                            <div className=''>주문하기</div>
-                        </Button>
+                <Footer
+                    value={"주문하기"}
+                    show={totalPrice > 0}
+                    onClick={() => { }}
+                >
+                    <div className='pt-0 p-2 d-flex justify-content-between text-secondary'>
+                        <div>품목 <span className='fw-semibold'>{cartItems.length}</span> · 수량 <span className='fw-semibold'>{totalQuantity}</span></div>
+                        <div className='text-success'>총 합계 <span className='fw-semibold'>{totalPrice.toLocaleString('ko-KR')}</span>원</div>
                     </div>
-                </footer>
+                </Footer>
 
             </div>
         </MotionPage>

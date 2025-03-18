@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button } from 'react-bootstrap';
 import { useTost } from '../utils/TostProvider';
 import SubHeader from '../components/SubHeader';
 import { useNavigate, useParams } from 'react-router-dom';
 import menu from "./dummyData.json";
 import MotionPage from '../motions/MotionPage';
+import Footer from '../components/Footer';
 
 function DetailPage({ setCartItems }) {
 
@@ -141,13 +141,12 @@ function DetailPage({ setCartItems }) {
                 </main>
 
                 {/* 푸터 */}
-                <footer className='pb-3'>
-                    <div className='p-2 border-top'>
-                        <Button variant='success' className='w-100 fw-semibold fs-4 py-2' disabled={total <= 0 ? true : false} onClick={addCart}>
-                            {total <= 0 ? '수량을 입력해주세요.' : total.toLocaleString('ko-KR') + '원 담기'}
-                        </Button>
-                    </div>
-                </footer>
+                <Footer 
+                    value={total <= 0 ? '수량을 입력해주세요.' : total.toLocaleString('ko-KR') + '원 담기'} 
+                    onClick={addCart}
+                    disabled={total <= 0 ? true : false}
+                    show={true}
+                />
             </div >
         </MotionPage>
     );
