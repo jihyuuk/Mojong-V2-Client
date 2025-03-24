@@ -6,11 +6,16 @@ import { useNavigate } from 'react-router-dom';
 import ItemList from '../components/ItemList';
 import SearchList from '../components/SearchList';
 import Footer from '../components/Footer';
+import { useShoppingCart } from '../utils/ShoppingCartProvider';
 
-function MainPage({ totalPrice }) {
+function MainPage() {
 
     //리액트 라우터
     const navigate = useNavigate();
+
+    //장바구니 정보
+    const { totalPrice } = useShoppingCart();
+
 
     //현재 활성화된 카테고리
     const [activeCat, setActiveCat] = useState(0);

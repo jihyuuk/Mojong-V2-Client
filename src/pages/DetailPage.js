@@ -5,8 +5,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import menu from "./dummyData.json";
 import MotionPage from '../motions/MotionPage';
 import Footer from '../components/Footer';
+import { useShoppingCart } from '../utils/ShoppingCartProvider';
 
-function DetailPage({ setCartItems }) {
+function DetailPage() {
 
     //리액트 라우터
     const navigate = useNavigate();
@@ -16,6 +17,8 @@ function DetailPage({ setCartItems }) {
 
     //토스트
     const { showTost } = useTost();
+    //장바구니
+    const { setCartItems } = useShoppingCart();
 
     //재고
     const stock = item.quantity;
@@ -141,8 +144,8 @@ function DetailPage({ setCartItems }) {
                 </main>
 
                 {/* 푸터 */}
-                <Footer 
-                    value={total <= 0 ? '수량을 입력해주세요.' : total.toLocaleString('ko-KR') + '원 담기'} 
+                <Footer
+                    value={total <= 0 ? '수량을 입력해주세요.' : total.toLocaleString('ko-KR') + '원 담기'}
                     onClick={addCart}
                     disabled={total <= 0 ? true : false}
                     show={true}

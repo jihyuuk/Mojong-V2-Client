@@ -5,14 +5,17 @@ import SubHeader from "../components/SubHeader";
 import MotionPage from "../motions/MotionPage";
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
+import { useShoppingCart } from "../utils/ShoppingCartProvider";
 
-function ShoppingCartPage({ cartItems, setCartItems, totalPrice, totalQuantity }) {
+function ShoppingCartPage() {
 
     //리액트 라우터
     const navigate = useNavigate();
 
     //토스트
     const { showTost } = useTost();
+    //장바구니
+    const { cartItems, setCartItems, totalPrice, totalQuantity } = useShoppingCart();
 
     //삭제버튼
     const clickDelete = (deleteId) => {
