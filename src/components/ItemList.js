@@ -13,10 +13,10 @@ function ItemList({ item }) {
         if (item.stock <= 0) {
             showTost("품절된 상품입니다.");
             return;
-        } 
-          
-        //상품상세로 이동
-        navigate(`/detail/${item.id}`);
+        }
+
+        //상품상세로 이동(state로 item 전달)
+        navigate("/detail", { state: item })
     };
 
     return (

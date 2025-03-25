@@ -92,7 +92,7 @@ function App() {
 
             <Routes>
               {/* 아이템 상세 페이지 */}
-              <Route path="/detail/:id" element={<DetailPage />} menu={menu} />
+              <Route path="/detail" element={<DetailPage />} menu={menu} />
               {/* 장바구니 페이지 */}
               <Route path="/shoppingCart" element={<ShoppingCartPage />} />
             </Routes>

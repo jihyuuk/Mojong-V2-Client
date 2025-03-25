@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useTost } from '../utils/TostProvider';
 import SubHeader from '../components/SubHeader';
-import { useNavigate, useParams } from 'react-router-dom';
-import menu from "./dummyData.json";
+import { useLocation, useNavigate } from 'react-router-dom';
 import MotionPage from '../motions/MotionPage';
 import Footer from '../components/Footer';
 import { useShoppingCart } from '../utils/ShoppingCartProvider';
@@ -11,9 +10,11 @@ function DetailPage() {
 
     //리액트 라우터
     const navigate = useNavigate();
-    //url파리미터로 item 찾기
-    const { id } = useParams();
-    const item = menu.categories.flatMap(category => category.items).find(item => item.id === parseInt(id, 10));
+    const location = useLocation();
+
+    //state로 넘어온 item 꺼내오기
+    const item = location.state;
+
 
     //토스트
     const { showTost } = useTost();
