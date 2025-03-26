@@ -1,6 +1,5 @@
 import { Form, Stack } from 'react-bootstrap';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import menu from "./dummyData.json";
 import { throttle } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 import ItemList from '../components/ItemList';
@@ -8,7 +7,7 @@ import SearchList from '../components/SearchList';
 import Footer from '../components/Footer';
 import { useShoppingCart } from '../utils/ShoppingCartProvider';
 
-function MainPage() {
+function MainPage({menu}) {
 
     //리액트 라우터
     const navigate = useNavigate();
@@ -26,7 +25,7 @@ function MainPage() {
     const contentRef = useRef(null);
     const categoryRefs = useRef([]);
     const sectionRefs = useRef([]);
-    const categoryCount = useMemo(() => menu.categories.length, []);// 카테고리 개수 캐싱 (불필요한 연산 방지)
+    const categoryCount = useMemo(() => menu.length, []);// 카테고리 개수 캐싱 (불필요한 연산 방지)
 
     //카테고리 클릭시에
     const onCatClick = (idx) => {
@@ -131,10 +130,11 @@ function MainPage() {
 
         setShowClearBtn(true);
         setSearchResults(
-            menu.categories.flatMap(category =>
+            menu.flatMap(category =>
                 category.items.filter(item => item.name.includes(searchValue.trim()))
             ));
 
+        //지우기
         searchResults.map(item => console.log(item.name))
 
     }, [searchValue])
@@ -209,7 +209,7 @@ function MainPage() {
 
                 {/* 카테고리 탭 */}
                 <Stack direction="horizontal" gap={3} className='overflow-x-auto text-nowrap px-2 pt-0 pb-1 border-bottom'>
-                    {menu.categories.map((category, index) => {
+                    {menu.map((category, index) => {
                         return (
                             <div
                                 id={`category${index}`}
@@ -218,7 +218,7 @@ function MainPage() {
                                 onClick={() => onCatClick(index)}
                                 ref={(el) => (categoryRefs.current[index] = el)}
                             >
-                                {category.categoryName}
+                                {category.name}
                             </div>
                         );
                     })}
@@ -229,12 +229,12 @@ function MainPage() {
             {/* 콘텐츠 */}
             <main id='content' ref={contentRef} className='flex-grow-1 overflow-y-auto bg-secondary-subtle'>
 
-                {menu.categories.map((category, index) => {
+                {menu.map((category, index) => {
                     return (
-                        <div id={`section${index}`} key={category.categoryName} className='mb-4 bg-white shadow-sm' ref={(el) => (sectionRefs.current[index] = el)}>
+                        <div id={`section${index}`} key={category.name} className='mb-4 bg-white shadow-sm' ref={(el) => (sectionRefs.current[index] = el)}>
 
                             {/* 카테고리 명 */}
-                            <div className='fs-2 fw-bold p-3 pb-0'>{category.categoryName}</div>
+                            <div className='fs-2 fw-bold p-3 pb-0'>{category.name}</div>
 
                             {/* 해당 아이템들 */}
                             {category.items.map((item) => <ItemList item={item} />)}
