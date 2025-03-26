@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ListGroup } from "react-bootstrap";
 import { useTost } from "../utils/TostProvider";
 import SubHeader from "../components/SubHeader";
 import MotionPage from "../motions/MotionPage";
-import { useNavigate } from "react-router-dom";
+import { replace, useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import { useShoppingCart } from "../utils/ShoppingCartProvider";
 
@@ -50,6 +50,13 @@ function ShoppingCartPage() {
         ))
     }
 
+    //장바구니가 비었는데 직접 /shoppingcart로 접근시에 리다이렉트
+    useEffect(()=>{
+        if(!cartItems || cartItems.length === 0){
+            navigate("/", { replace: true });
+        }
+    },[]);
+    if(!cartItems || cartItems.length === 0) return null;
 
     return (
         <MotionPage> {/* 에니메이션 적용 */}

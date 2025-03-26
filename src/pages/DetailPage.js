@@ -11,7 +11,6 @@ function DetailPage() {
     //리액트 라우터
     const navigate = useNavigate();
     const location = useLocation();
-
     //state로 넘어온 item 꺼내오기
     const item = location.state;
 
@@ -21,8 +20,6 @@ function DetailPage() {
     //장바구니
     const { setCartItems } = useShoppingCart();
 
-    //재고
-    const stock = item.quantity;
     //수량
     const [quantity, setQuantity] = useState(0);
     //최대수량
@@ -36,6 +33,7 @@ function DetailPage() {
 
     //수량 변화시 금액 변경
     useEffect(() => {
+        if (!item) return;
         setTotal(item.price * quantity);
     }, [quantity])
 
@@ -86,6 +84,15 @@ function DetailPage() {
         showTost("장바구니 추가 완료");
         navigate(-1); // 상세페이지 닫기
     };
+
+
+    //상품 클릭 없이 직접 /detail로 접근시 리다이렉트
+    useEffect(() => {
+        if (!item) {
+            navigate("/", { replace: true });
+        }
+    }, [item, navigate]);
+    if (!item) return null;
 
     return (
         //애니메이션 적용

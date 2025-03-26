@@ -13,10 +13,10 @@ function SearchList({ item }) {
         if (item.stock <= 0) {
             showTost("품절된 상품입니다.");
             return;
-        } 
-          
+        }
+
         //상품상세로 이동
-        navigate(`/detail/${item.id}`);
+        navigate("/detail", { state: item });
     };
 
     return (
