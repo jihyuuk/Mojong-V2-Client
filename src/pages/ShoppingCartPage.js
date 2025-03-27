@@ -5,6 +5,7 @@ import MotionPage from "../motions/MotionPage";
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import { useShoppingCart } from "../utils/ShoppingCartProvider";
+import axiosWithToken from "../utils/axiosWithToken";
 
 function ShoppingCartPage() {
 
@@ -19,6 +20,7 @@ function ShoppingCartPage() {
     //결제 방식
     const [payment, setPayment] = useState();
     const paymentSectionRef = useRef(null);
+    const [orderState, setOrderState] = useState();
 
 
     //삭제버튼
@@ -67,6 +69,33 @@ function ShoppingCartPage() {
 
             return;
         }
+
+        setOrderState("loading");
+
+        const orderData = {
+            items: cartItems.map(item => ({
+                id: item.id,
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity,
+                totalAmount: (item.price * item.quantity),
+            })),
+            totalAmount: totalPrice,
+            discountAmount: 0,
+            finalAmount: totalPrice, 
+            payment : payment
+        }
+
+        //서버로 전송
+        axiosWithToken.post("/order", orderData)
+        .then((response) => {
+            console.log("성공"+response);
+            //window.location.replace("/"); 
+        })
+        .catch((error) => {
+            setOrderState("fail");
+            console.log("실패"+error);
+        });
     }
 
 
@@ -77,6 +106,15 @@ function ShoppingCartPage() {
         }
     }, []);
     if (!cartItems || cartItems.length === 0) return null;
+
+    //주문 버튼 클릭시 뜨는 페이지
+    if(orderState) return(
+        <div className="z-1 position-absolute top-0 start-0 w-100 h-100 bg-white">
+            { orderState == "loading" && <div>로딩중</div>}
+            { orderState == "success" && <div>성공</div>}
+            { orderState == "fail" && <div>실패</div>}
+        </div>
+    );
 
     return (
         <MotionPage> {/* 에니메이션 적용 */}
@@ -176,12 +214,12 @@ function ShoppingCartPage() {
                         <div className="pb-3 fs-4 fw-semibold">결제 방식</div>
 
                         <div className="pb-2 text-center gap-2 d-flex fw-semibold">
-                            <div className={payment == "cashier" ? "payment-on" : "payment-off"} onClick={()=>setPayment("cashier")}>
-                                <img src={payment == "cashier" ? "/cashier_on.png" : "/cashier_off.png"} style={{ width: '100px', height: '100px' }} />
+                            <div className={payment == "QR_CASHIER" ? "payment-on" : "payment-off"} onClick={()=>setPayment("QR_CASHIER")}>
+                                <img src={payment == "QR_CASHIER" ? "/cashier_on.png" : "/cashier_off.png"} style={{ width: '100px', height: '100px' }} />
                                 <div className="mt-3 fs-6">직원에게 결제</div>
                             </div>
-                            <div className={payment == "self" ? "payment-on" : "payment-off"} onClick={()=>setPayment("self")}>
-                                <img src={payment == "self" ? "/self_on.png" : "/self_off.png"} style={{ width: '100px', height: '100px', marginRight: '30px' }} />
+                            <div className={payment == "QR_SELF" ? "payment-on" : "payment-off"} onClick={()=>setPayment("QR_SELF")}>
+                                <img src={payment == "QR_SELF" ? "/self_on.png" : "/self_off.png"} style={{ width: '100px', height: '100px', marginRight: '30px' }} />
                                 <div className="mt-3 fs-6">셀프 결제</div>
                             </div>
                         </div>
