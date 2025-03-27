@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTost } from "../utils/TostProvider";
 import SubHeader from "../components/SubHeader";
 import MotionPage from "../motions/MotionPage";
@@ -18,6 +18,7 @@ function ShoppingCartPage() {
 
     //결제 방식
     const [payment, setPayment] = useState();
+    const paymentSectionRef = useRef(null);
 
 
     //삭제버튼
@@ -52,6 +53,22 @@ function ShoppingCartPage() {
             }
         ))
     }
+
+    //주문버튼 클릭
+    const orderClick = () => {
+        //결제 방식 선택 안 했을때
+        if(!payment){
+            showTost("결제 방식을 선택해주세요.");
+
+            paymentSectionRef.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+            return;
+        }
+    }
+
 
     //장바구니가 비었는데 직접 /shoppingcart로 접근시에 리다이렉트
     useEffect(() => {
@@ -155,7 +172,7 @@ function ShoppingCartPage() {
 
 
                     {/* 결제 방식 */}
-                    <div className="bg-white mt-3 shadow-sm p-3">
+                    <div className="bg-white mt-3 shadow-sm p-3" ref={paymentSectionRef}>
                         <div className="pb-3 fs-4 fw-semibold">결제 방식</div>
 
                         <div className="pb-2 text-center gap-2 d-flex fw-semibold">
@@ -182,7 +199,7 @@ function ShoppingCartPage() {
                 <Footer
                     value={"주문하기"}
                     show={totalPrice > 0}
-                    onClick={() => { }}
+                    onClick={orderClick}
                 >
                     <div className='pt-0 p-2 d-flex justify-content-between text-secondary'>
                         <div>품목 <span className='fw-semibold'>{cartItems.length}</span> · 수량 <span className='fw-semibold'>{totalQuantity}</span></div>
