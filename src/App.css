@@ -1,31 +1,52 @@
 .App {
-    /* 기본 앱 동작 */
-    max-width: 768px;
-    min-width: 375px;
-    height: 100%;
-    margin: auto;
-    background-color: white;
-    position: relative;
-    overflow: hidden;
-  }
-  
+  /* 기본 앱 동작 */
+  max-width: 768px;
+  min-width: 375px;
+  height: 100%;
+  margin: auto;
+  background-color: white;
+  position: relative;
+  overflow: hidden;
+}
 
-  /* 카테고리 폰트 색상 */
-  .myCategory{
-    padding: 0.5rem;
-    color: #6c757d;
-    font-weight: 500;
-    font-size: large;
-  }
-  /* 카테고리 활성화 */
-  .myCategory.active{
-    font-weight: bold;
-    color:#198754;
-    border-bottom: 3px solid #198754;
-  }
-  
-  /* link의 기본 css 제거 */
-  a{
-    text-decoration: none;
-    color: black;
-  }
+
+/* 카테고리 폰트 색상 */
+.myCategory {
+  padding: 0.5rem;
+  color: #6c757d;
+  font-weight: 500;
+  font-size: large;
+}
+
+/* 카테고리 활성화 */
+.myCategory.active {
+  font-weight: bold;
+  color: #198754;
+  border-bottom: 3px solid #198754;
+}
+
+/* link의 기본 css 제거 */
+a {
+  text-decoration: none;
+  color: black;
+}
+
+/* 결제방식 */
+.payment-off {
+  color: #6c757d;
+  border: 2px solid #dee2e6;
+  border-radius: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  width: 50%;
+}
+
+.payment-on {
+  background-color: #f3fffa;
+  color: #198754;
+  border: 2px solid #198754;
+  border-radius: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  width: 50%;
+}

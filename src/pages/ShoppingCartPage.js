@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTost } from "../utils/TostProvider";
 import SubHeader from "../components/SubHeader";
 import MotionPage from "../motions/MotionPage";
@@ -15,6 +15,10 @@ function ShoppingCartPage() {
     const { showTost } = useTost();
     //장바구니
     const { cartItems, setCartItems, totalPrice, totalQuantity } = useShoppingCart();
+
+    //결제 방식
+    const [payment, setPayment] = useState();
+
 
     //삭제버튼
     const clickDelete = (deleteId) => {
@@ -155,17 +159,17 @@ function ShoppingCartPage() {
                         <div className="pb-3 fs-4 fw-semibold">결제 방식</div>
 
                         <div className="pb-2 text-center gap-2 d-flex fw-semibold">
-                            <div className="border border-2  border-success rounded-4 py-3 w-50" style={{ backgroundColor: "#f3fffa" }}>
-                                <img src="/cashier_on.png" style={{ width: '100px', height: '100px' }} />
-                                <div className="mt-3 fs-6 text-success">직원에게 결제</div>
+                            <div className={payment == "cashier" ? "payment-on" : "payment-off"} onClick={()=>setPayment("cashier")}>
+                                <img src={payment == "cashier" ? "/cashier_on.png" : "/cashier_off.png"} style={{ width: '100px', height: '100px' }} />
+                                <div className="mt-3 fs-6">직원에게 결제</div>
                             </div>
-                            <div className="border border-2 rounded-4 py-3  w-50">
-                                <img src="/self_off.png" style={{ width: '100px', height: '100px', marginRight: '30px' }} />
-                                <div className="mt-3 fs-6 text-secondary">셀프 결제</div>
+                            <div className={payment == "self" ? "payment-on" : "payment-off"} onClick={()=>setPayment("self")}>
+                                <img src={payment == "self" ? "/self_on.png" : "/self_off.png"} style={{ width: '100px', height: '100px', marginRight: '30px' }} />
+                                <div className="mt-3 fs-6">셀프 결제</div>
                             </div>
                         </div>
-
-                        <div className="text-danger ps-2">※ 결제 방식을 선택해주세요.</div>
+                        
+                        {!payment && <div className="text-danger ps-2">※ 결제 방식을 선택해주세요.</div>}
 
                         {/* 여백 */}
                         <div style={{ height: '4rem' }}></div>
