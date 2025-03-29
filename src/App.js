@@ -10,6 +10,9 @@ import { useEffect, useState } from 'react';
 import LoadingMain from './components/LoadingMain';
 import axios from 'axios';
 import axiosWithToken from './utils/axiosWithToken';
+import SuccessPage from './pages/SuccessPage';
+import SelfOrderPage from './pages/SelfOrderPage';
+import CashierOrderPage from './pages/CashierOrderPage';
 
 function App() {
 
@@ -95,6 +98,14 @@ function App() {
               <Route path="/detail" element={<DetailPage />} menu={menu} />
               {/* 장바구니 페이지 */}
               <Route path="/shoppingCart" element={<ShoppingCartPage />} />
+
+              {/* 직원결제 페이지 */}
+              <Route path="/cashier-order" element={<CashierOrderPage />} />
+              {/* 토스결제 페이지 */}
+              <Route path="/self-order" element={<SelfOrderPage />} />
+
+              {/* 토스 결제 성공 페이지 */}
+              <Route path="/success" element={<SuccessPage/>}/>
             </Routes>
 
           </ShoppingCartProvider>
