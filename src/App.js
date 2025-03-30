@@ -5,7 +5,7 @@ import DetailPage from './pages/DetailPage';
 import ShoppingCartPage from './pages/ShoppingCartPage';
 import { TostProvider } from './utils/TostProvider';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { ShoppingCartProvider } from './utils/ShoppingCartProvider';
+import { ShoppingCartProvider, useShoppingCart } from './utils/ShoppingCartProvider';
 import { useEffect, useState } from 'react';
 import LoadingMain from './components/LoadingMain';
 import axios from 'axios';
@@ -13,6 +13,7 @@ import axiosWithToken from './utils/axiosWithToken';
 import SuccessPage from './pages/SuccessPage';
 import SelfOrderPage from './pages/SelfOrderPage';
 import CashierOrderPage from './pages/CashierOrderPage';
+import FailPage from './pages/FailPage';
 
 function App() {
 
@@ -52,12 +53,20 @@ function App() {
 
   }, []);
 
-  //메뉴 가져오기 
+
+  //2. 메뉴 불러오기
   useEffect(() => {
+    fetchMenu();
+  }, [token]);
+
+
+  //메뉴 불러오는 함수
+  const fetchMenu = () => {
     //토큰이 있을 때만 실행
     if (!token) return;
 
     console.log("메뉴 가져오기 ");
+    //setIsLoading(true); <= 없는게 깔끔할지도
 
     axiosWithToken.get('/menu')
       .then((response) => {
@@ -74,8 +83,7 @@ function App() {
 
         alert("상품을 불러오지 못 했습니다. 관리자에게 문의해주세요.");
       });
-  }, [token]);
-
+  }
 
 
   //로딩시
@@ -95,17 +103,18 @@ function App() {
 
             <Routes>
               {/* 아이템 상세 페이지 */}
-              <Route path="/detail" element={<DetailPage />} menu={menu} />
+              <Route path="/detail" element={<DetailPage />} />
               {/* 장바구니 페이지 */}
               <Route path="/shoppingCart" element={<ShoppingCartPage />} />
 
               {/* 직원결제 페이지 */}
-              <Route path="/cashier-order" element={<CashierOrderPage />} />
+              <Route path="/cashier-order" element={<CashierOrderPage fetchMenu={fetchMenu} />} />
               {/* 토스결제 페이지 */}
               <Route path="/self-order" element={<SelfOrderPage />} />
 
-              {/* 토스 결제 성공 페이지 */}
-              <Route path="/success" element={<SuccessPage/>}/>
+              {/* 토스 결제 성공,실패 페이지 */}
+              <Route path="/success" element={<SuccessPage fetchMenu={fetchMenu} />} />
+              <Route path="/fail" element={<FailPage />} />
             </Routes>
 
           </ShoppingCartProvider>
