@@ -5,7 +5,7 @@ import axiosWithToken from "../utils/axiosWithToken";
 import { Button } from "react-bootstrap";
 import Footer from "../components/Footer";
 
-function CashierOrderPage() {
+function CashierOrderPage({fetchMenu}) {
 
     //장바구니
     const { cartItems, totalPrice, setCartItems } = useShoppingCart();
@@ -72,11 +72,12 @@ function CashierOrderPage() {
                     </div>
 
                     <Footer value={"홈으로"} show={true} onClick={() => {
-                            //홈화면 이동
-                            navigate(-2);
-                            //장바구니 초기화 <========== 장바구니와 메뉴 초기화 하는 로직
+                            //장바구니 초기화 
                             setCartItems([]);
                             //메뉴 초기화
+                            fetchMenu();
+                            //홈화면 이동
+                            navigate(-2);
                         }}
                     />
                 </div>
