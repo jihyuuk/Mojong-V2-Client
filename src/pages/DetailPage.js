@@ -34,6 +34,14 @@ function DetailPage() {
     //수량 변화시 금액 변경
     useEffect(() => {
         if (!item) return;
+
+        //수량 초과 검증하기
+        if(quantity > item.stock){
+            setQuantity(item.stock);
+            showTost("재고가 부족합니다. (재고:"+item.stock+"개)")
+            return;
+        }        
+        
         setTotal(item.price * quantity);
     }, [quantity])
 
