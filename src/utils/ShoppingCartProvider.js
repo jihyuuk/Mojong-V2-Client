@@ -14,10 +14,13 @@ export function ShoppingCartProvider({ children, menu }) {
 
     //로컬스토리지에서 불러오기
     const getLocal = () => {
+
+        if (!menu || menu.length === 0) return;
+
         //불러오기
         let savedCart = localStorage.getItem("cartItems");
-        //없으면 return
-        if (!savedCart) return;
+        // 없거나 빈 배열이면 return
+        if (!savedCart || savedCart === "[]") return;
 
         //있으면 검증
         //menu 돌면서 품절이거나 없는 상품인지 확인

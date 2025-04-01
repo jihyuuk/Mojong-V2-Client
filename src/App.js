@@ -96,7 +96,7 @@ function App() {
     <div className="App">
       <BrowserRouter>{/* react-rotuer-dom */}
         <TostProvider>{/* 토스트 기능 context */}
-          <ShoppingCartProvider>
+          <ShoppingCartProvider menu={menu}>
 
             {/* 메인 페이지 */}
             <MainPage menu={menu} />
