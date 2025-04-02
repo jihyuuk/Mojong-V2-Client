@@ -14,8 +14,18 @@ function SearchPage({ menu }) {
     const [showClearBtn, setShowClearBtn] = useState(false); //클리어버튼
     const inputRef = useRef(null);
 
+    //초기화
     useEffect(() => {
+        //자동포커스
         inputRef.current.focus();
+
+        //터치 감지해서 input focus 해제
+        const handleTouchStart = () => {
+            inputRef.current?.blur();
+        };
+
+        document.addEventListener("touchstart", handleTouchStart);
+        return () => document.removeEventListener("touchstart", handleTouchStart);
     }, []);
 
     //검색창 변화시
@@ -43,8 +53,6 @@ function SearchPage({ menu }) {
         setSearchValue('');
         inputRef.current?.focus();
     }
-
-
 
 
     return (
@@ -108,12 +116,12 @@ function SearchPage({ menu }) {
 
                     {/* 검색결과 리스트*/}
                     <div className='bg-white shadow-sm'>
-                        {searchResults.map(item => <ItemList item={item}/>)}
-                        {/* {searchResults.map((item) => <SearchList item={item} />)} */}
+                        {searchResults.map(item => <ItemList item={item} replace={true} />)}
+                        {/* {searchResults.map((item) => <SearchList item={item} replace={true} />)} */}
                     </div>
 
                     {/* 여백 */}
-                    <div style={{height:'150px'}}/>
+                    <div style={{ height: '150px' }} />
                 </div>
 
             </div>

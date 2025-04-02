@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useTost } from "../utils/TostProvider";
 
-function ItemList({ item }) {
+function ItemList({ item, replace }) {
 
     const navigate = useNavigate(); //라우터
     const { showTost } = useTost(); //토스트
@@ -16,7 +16,7 @@ function ItemList({ item }) {
         }
 
         //상품상세로 이동(state로 item 전달)
-        navigate("/detail", { state: item })
+        navigate("/detail", { state: item, replace: replace })
     };
 
     return (
