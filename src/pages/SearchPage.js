@@ -57,12 +57,12 @@ function SearchPage({ menu }) {
 
     return (
         <div className="z-1 position-absolute top-0 start-0 w-100 h-100 bg-white">
-            <div className="d-flex flex-column h-100 w-100">
+            <div className="d-flex flex-column h-100 w-100 bg-body-secondary">
 
                 {/* 헤더 */}
-                <header className='border-bottom'>
+                <header className="bg-white">
 
-                    <div className='d-flex align-items-center pt-3 pb-1 '>
+                    <div className='d-flex align-items-center py-3'>
 
                         {/* 뒤로가기 왼쪽 < 아이콘 */}
                         <div className='p-2' onClick={() => navigate(-1)}>
@@ -103,27 +103,77 @@ function SearchPage({ menu }) {
                     </div>
 
                     {/* 검색 수량 // 취소버튼 */}
-                    <div className='text-secondary fw-mefium d-flex justify-content-between bg-white border-bottom'>
+                    {/* <div className='text-secondary fw-mefium d-flex justify-content-between bg-white border-bottom'>
                         <div className='p-2 ps-3'>
                             검색 결과 : {searchResults.length}개
                         </div>
                         <div className='p-2 pe-3' onClick={() => navigate(-1)}>닫기</div>
-                    </div>
+                    </div> */}
                 </header>
 
+                {/* 최근검색항목 */}
+                {searchValue.length === 0 &&
+                    <>
+                        <div className="d-flex justify-content-between align-items-center p-2 pt-0 bg-white shadow-sm">
+                            <div className="fw-semibold ps-2">최근 검색</div>
+                            <div className="text-secondary" style={{ fontSize: '0.9rem' }}>
+                                <span className="pe-2">전체삭제</span>
+                                <span className="ps-2 border-start">자동저장 끄기</span>
+                            </div>
+                        </div>
+
+                        <div className="d-flex fs-6 p-2 pt-3 gap-2">
+                            <div className="d-flex align-items-center p-2 ps-3 border rounded-pill bg-white shadow-sm">
+                                <div>
+                                    하하
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-x ms-1 text-secondary" viewBox="0 0 16 16">
+                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                </svg>
+                            </div>
+
+                            <div className="d-flex align-items-center p-2 ps-3 border rounded-pill bg-white shadow-sm">
+                                <div>
+                                    피자
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-x ms-1 text-secondary" viewBox="0 0 16 16">
+                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                </svg>
+                            </div>
+
+                            <div className="d-flex align-items-center p-2 ps-3 border rounded-pill bg-white shadow-sm">
+                                <div>
+                                    오리고기
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-x ms-1 text-secondary" viewBox="0 0 16 16">
+                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                </svg>
+                            </div>
+                        </div>
+                    </>
+                }
+
+
                 {/* 검색결과 */}
-                <div className='flex-grow-1 overflow-y-auto bg-body-secondary'>
+                {searchValue.length > 0 &&
+                    <>
+                        <div className='p-2 pt-0 ps-3 bg-white fw-semibold text-success'>
+                            검색 결과 : {searchResults.length}개
+                        </div>
 
-                    {/* 검색결과 리스트*/}
-                    <div className='bg-white shadow-sm'>
-                        {searchResults.map(item => <ItemList item={item} replace={true} />)}
-                        {/* {searchResults.map((item) => <SearchList item={item} replace={true} />)} */}
-                    </div>
+                        <div className='flex-grow-1 overflow-y-auto bg-body-secondary border-top'>
 
-                    {/* 여백 */}
-                    <div style={{ height: '150px' }} />
-                </div>
+                            {/* 검색결과 리스트*/}
+                            <div className='bg-white shadow-sm'>
+                                {searchResults.map(item => <ItemList item={item} replace={true} />)}
+                                {/* {searchResults.map((item) => <SearchList item={item} replace={true} />)} */}
+                            </div>
 
+                            {/* 여백 */}
+                            <div style={{ height: '150px' }} />
+                        </div>
+                    </>
+                }
             </div>
         </div>
     );
