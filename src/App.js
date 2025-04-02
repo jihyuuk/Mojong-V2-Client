@@ -14,6 +14,7 @@ import SuccessPage from './pages/SuccessPage';
 import SelfOrderPage from './pages/SelfOrderPage';
 import CashierOrderPage from './pages/CashierOrderPage';
 import FailPage from './pages/FailPage';
+import SearchPage from './pages/SearchPage';
 
 function App() {
 
@@ -102,6 +103,8 @@ function App() {
             <MainPage menu={menu} />
 
             <Routes>
+              {/* 검색 페이지 */}
+              <Route path="/search" element={<SearchPage menu={menu} />} />
               {/* 아이템 상세 페이지 */}
               <Route path="/detail" element={<DetailPage />} />
               {/* 장바구니 페이지 */}

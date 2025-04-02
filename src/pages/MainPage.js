@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { throttle } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 import ItemList from '../components/ItemList';
-import SearchList from '../components/SearchList';
 import Footer from '../components/Footer';
 import { useShoppingCart } from '../utils/ShoppingCartProvider';
 
@@ -110,47 +109,6 @@ function MainPage({menu}) {
     }, [throttledHandleScroll]);
 
 
-    //검색기능================================
-    const [searchValue, setSearchValue] = useState(''); //검색어
-    const [searchResults, setSearchResults] = useState([]);//검색결과
-    const [showSearchField, setShowSearchField] = useState(false);//검색결과 피드
-    const [showClearBtn, setShowClearBtn] = useState(false); //클리어버튼
-    const inputRef = useRef(null);
-
-    //검색창 변화시
-    useEffect(() => {
-        //1.검색어가 있을때만 클리어 버튼 보여주기
-        //2.아이템 찾기
-
-        if (searchValue.trim() === '') {
-            setSearchResults([]);
-            setShowClearBtn(false);
-            return;
-        }
-
-        setShowClearBtn(true);
-        setSearchResults(
-            menu.flatMap(category =>
-                category.items.filter(item => item.name.includes(searchValue.trim()))
-            ));
-
-        //지우기
-        searchResults.map(item => console.log(item.name))
-
-    }, [searchValue])
-
-    //검색 취소버튼
-    const cancleSearch = () => {
-        setSearchValue('');
-        setShowSearchField(false);
-    }
-
-    //x 버튼 클릭시
-    const handleClear = () => {
-        setSearchValue('');
-        inputRef.current?.focus();
-    }
-
     return (
         // 메인페이지
         <div className="MainPage d-flex flex-column h-100">
@@ -162,50 +120,13 @@ function MainPage({menu}) {
                 <div className='px-2 pt-3 pb-1'>
                     <div className='position-relative'>
                         <Form.Control size="lg" id='searchBar' type="text"
-                            ref={inputRef}
                             className='ps-4 pe-5 rounded-5 border-2 border-success-subtle'
                             placeholder="🔍 검색하기"
-                            value={searchValue}
-                            onChange={(e) => setSearchValue(e.target.value)}
-                            onClick={() => setShowSearchField(true)}
+                            onClick={() => navigate("/search")}
+                            readOnly
                         />
-
-                        {/* 클리어버튼 */}
-                        {showClearBtn &&
-                            <div className='position-absolute top-50 end-0 translate-middle-y me-3' onClick={handleClear}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-x my-auto h-100" viewBox="0 0 16 16">
-                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-                                </svg>
-                            </div>
-                        }
                     </div>
                 </div>
-
-                {/* 검색결과 */}
-                {showSearchField &&
-                    <div className='position-absolute w-100 h-100 z-1'>
-
-                        {/* 검색 수량 // 취소버튼 */}
-                        <div className='text-secondary py-1 fw-mefium d-flex justify-content-between bg-white'>
-                            <div className='p-2 ps-3'>
-                                검색 결과 : {searchResults.length}개</div>
-                            <div className='p-2 pe-3' onClick={cancleSearch}>닫기</div>
-                        </div>
-
-                        <div className='position-absolute d-flex flex-column h-100 w-100 overflow-y-auto' onScroll={() => inputRef.current?.blur()}>
-                            {/* 검색결과 리스트*/}
-                            <div className='bg-white shadow-sm'>
-                                {/* {searchResults.map(item => <ItemList item={item}/>)} */}
-                                {searchResults.map((item) => <SearchList item={item} />)}
-                            </div>
-
-                            {/* 남는 부분 배경채우기 */}
-                            <div className='bg-secondary bg-opacity-50 flex-grow-1' style={{ minHeight: '300px' }} onClick={cancleSearch}></div>
-
-                        </div>
-                    </div>
-                }
-
 
                 {/* 카테고리 탭 */}
                 <Stack direction="horizontal" gap={3} className='overflow-x-auto text-nowrap px-2 pt-0 pb-1 border-bottom'>
