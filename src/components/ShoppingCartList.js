@@ -49,7 +49,7 @@ function ShoppingCartList() {
 
     return (
         //상품리스트 
-        <div className='border rounded-3'>
+        <div className='border border-success-subtle rounded-3'>
 
             {cartItems.map((item, index) => {
                 return (
@@ -73,22 +73,23 @@ function ShoppingCartList() {
                                 {/* 수량버튼 */}
                                 <div className="border border-success-subtle rounded-3 d-flex align-items-center ">
                                     {/* 빼기 */}
-                                    <span className={`p-2 ${item.quantity <= 1 ? 'text-secondary' : ''}`} onClick={() => clickMinus(item.id)}>
+                                    <div className={`p-2 ${item.quantity <= 1 ? 'text-secondary' : ''}`} onClick={() => clickMinus(item.id)}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-dash-lg" viewBox="0 0 16 16">
                                             <path fillRule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8" />
                                         </svg>
-                                    </span>
+                                    </div>
                                     {/* 수량 */}
-                                    <input type="text" size={3} pattern="[0-9]*" inputMode="numeric"
-                                        className="text-center border-0"
-                                        value={item.quantity}
-                                    />
+                                    <div className="px-2">
+                                        <div className="text-center" style={{ width: "2ch" }}>
+                                            {item.quantity}
+                                        </div>
+                                    </div>
                                     {/* 더하기 */}
-                                    <span className={`p-2 ${item.quantity >= 999 ? 'text-secondary' : ''}`} onClick={() => clickPlus(item.id)}>
+                                    <div className={`p-2 ${item.quantity >= 999 ? 'text-secondary' : ''}`} onClick={() => clickPlus(item.id)}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-lg" viewBox="0 0 16 16">
                                             <path fillRule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
                                         </svg>
-                                    </span>
+                                    </div>
                                 </div>
 
 

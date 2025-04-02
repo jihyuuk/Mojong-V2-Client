@@ -76,7 +76,7 @@ function ShoppingCartPage() {
                     {/* 합계 */}
                     <div className="mt-3 bg-white shadow-sm p-3">
                         <div className="pb-3 fs-4 fw-semibold">합계</div>
-                        <div className="border border-success rounded-3">
+                        <div className="border border-success-subtle rounded-3">
                             <div className=" d-flex justify-content-between p-3 fs-5 fw-medium">
                                 <div>총 금액 :</div>
                                 <div className="fw-semibold text-success">{totalPrice.toLocaleString("ko-KR")}원</div>
