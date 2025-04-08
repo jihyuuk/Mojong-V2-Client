@@ -2,12 +2,16 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useTost } from "../utils/TostProvider";
 
-function ItemList({ item, replace }) {
+function ItemList({ item, replace, parentOnClick }) {
 
     const navigate = useNavigate(); //라우터
     const { showTost } = useTost(); //토스트
 
     const click = () => {
+        //부모 onClick이벤트 버블링
+        if(parentOnClick){
+            parentOnClick(item.name);
+        }
 
         //품절시 상품상세 이동 x
         if (item.stock <= 0) {

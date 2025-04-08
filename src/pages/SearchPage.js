@@ -19,22 +19,15 @@ function SearchPage({ menu }) {
         const localHistory = window.localStorage.getItem("searchHistory");
         return localHistory ? JSON.parse(localHistory) : [];
     });
-    const [offHistory, setOffHistory] = useState(false);
+    //자동저장(기본값 : 켜기)========================
+    const [isHistoryDisabled, setIsHistoryDisabled] = useState(()=>{
+        return window.localStorage.getItem("isHistoryDisabled") === "true";
+    });
 
     //초기화
     useEffect(() => {
         //자동포커스
         inputRef.current.focus();
-
-        //자동저장 켜기 끄기여부
-        const localOffHistory = Boolean(window.localStorage.getItem("offHistory"));
-        if (localOffHistory) setOffHistory(localOffHistory);
-
-        //최근 검색어 가져오기
-        if (!localOffHistory) {
-            const localHistory = window.localStorage.getItem("searchHistory");
-            if (localHistory) setSearchHistory(JSON.parse(localHistory));
-        }
 
         //터치 감지해서 input focus 해제
         const handleTouchStart = () => {
@@ -85,17 +78,19 @@ function SearchPage({ menu }) {
     }
     //3.자동저장 켜기 끄기
     const onOffClick = () => {
-        if (offHistory) clearAll();
-        window.localStorage.setItem("offHistory", !offHistory);
-        setOffHistory(!offHistory);
+        const newState = !isHistoryDisabled;
+        if (newState) clearAll();
+        window.localStorage.setItem("isHistoryDisabled", String(newState));
+        setIsHistoryDisabled(newState);
     }
     //4. 최근검색어 클릭시
     const historyClick = (itemName) => {
         setSearchValue(itemName);
-        itemClick(itemName);
+        saveHistory(itemName);
     }
     //5.아이템 클릭시 히스토리 저장
-    const itemClick = (itemName) => {
+    const saveHistory = (itemName) => {
+        if(isHistoryDisabled) return;
         setSearchHistory((prevHistory) => {
             const filteredHistory = prevHistory.filter(prev => prev !== itemName); // 중복 제거
             const updatedHistory = [itemName, ...filteredHistory]; // 맨 앞에 추가
@@ -168,7 +163,7 @@ function SearchPage({ menu }) {
                             <div className="fw-semibold ps-2">최근 검색</div>
                             <div className="text-secondary d-flex me-1" style={{ fontSize: '0.9rem' }}>
 
-                                {offHistory && <div className="pe-2 border-end" onClick={clearAll}>전체삭제</div>}
+                                {!isHistoryDisabled && <div className="pe-2 border-end" onClick={clearAll}>전체삭제</div>}
 
                                 <Form.Check 
                                     className="ps-2"
@@ -177,12 +172,12 @@ function SearchPage({ menu }) {
                                     id="custom-switch"
                                     label="자동저장"
                                     reverse
-                                    checked={offHistory}
+                                    checked={!isHistoryDisabled}
                                 />
                             </div>
                         </div>
 
-                        <div className="d-flex fs-6 p-2 pt-3 gap-2">
+                        <div className="d-flex flex-wrap fs-6 p-2 pt-3 gap-2">
                             {searchHistory.map((itemName, idx) =>
                                 <div className="d-flex align-items-center p-2 ps-3 border rounded-pill bg-white shadow-sm">
                                     <div onClick={() => historyClick(itemName)}>
@@ -209,7 +204,7 @@ function SearchPage({ menu }) {
 
                             {/* 검색결과 리스트*/}
                             <div className='bg-white shadow-sm'>
-                                {searchResults.map(item => <ItemList item={item} replace={true} parentOnClick={itemClick} />)}
+                                {searchResults.map(item => <ItemList item={item} replace={true} parentOnClick={saveHistory} />)}
                                 {/* {searchResults.map((item) => <SearchList item={item} replace={true} />)} */}
                             </div>
 
