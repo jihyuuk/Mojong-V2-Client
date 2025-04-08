@@ -14,10 +14,27 @@ function SearchPage({ menu }) {
     const [showClearBtn, setShowClearBtn] = useState(false); //클리어버튼
     const inputRef = useRef(null);
 
+    //최근 검색어================================
+    const [searchHistory, setSearchHistory] = useState(() => {
+        const localHistory = window.localStorage.getItem("searchHistory");
+        return localHistory ? JSON.parse(localHistory) : [];
+    });
+    const [offHistory, setOffHistory] = useState(false);
+
     //초기화
     useEffect(() => {
         //자동포커스
         inputRef.current.focus();
+
+        //자동저장 켜기 끄기여부
+        const localOffHistory = Boolean(window.localStorage.getItem("offHistory"));
+        if (localOffHistory) setOffHistory(localOffHistory);
+
+        //최근 검색어 가져오기
+        if (!localOffHistory) {
+            const localHistory = window.localStorage.getItem("searchHistory");
+            if (localHistory) setSearchHistory(JSON.parse(localHistory));
+        }
 
         //터치 감지해서 input focus 해제
         const handleTouchStart = () => {
@@ -27,6 +44,8 @@ function SearchPage({ menu }) {
         document.addEventListener("touchstart", handleTouchStart);
         return () => document.removeEventListener("touchstart", handleTouchStart);
     }, []);
+
+    //검색기능===============================================================
 
     //검색창 변화시
     useEffect(() => {
@@ -53,6 +72,44 @@ function SearchPage({ menu }) {
         setSearchValue('');
         inputRef.current?.focus();
     }
+
+    //최근 검색어 기능==============================================================
+
+    //1.전체 삭제
+    const clearAll = () => {
+        setSearchHistory([]);
+    }
+    //2.부분 삭제
+    const remove = (idx) => {
+        setSearchHistory(searchHistory.filter((_, index) => index !== idx));
+    }
+    //3.자동저장 켜기 끄기
+    const onOffClick = () => {
+        if (offHistory) clearAll();
+        window.localStorage.setItem("offHistory", !offHistory);
+        setOffHistory(!offHistory);
+    }
+    //4. 최근검색어 클릭시
+    const historyClick = (itemName) => {
+        setSearchValue(itemName);
+        itemClick(itemName);
+    }
+    //5.아이템 클릭시 히스토리 저장
+    const itemClick = (itemName) => {
+        setSearchHistory((prevHistory) => {
+            const filteredHistory = prevHistory.filter(prev => prev !== itemName); // 중복 제거
+            const updatedHistory = [itemName, ...filteredHistory]; // 맨 앞에 추가
+            return updatedHistory.slice(0, 10); // 최근 10개 유지
+        });
+    };
+
+    useEffect(() => {
+        if (searchHistory.length === 0) {
+            window.localStorage.removeItem("searchHistory");
+            return;
+        }
+        window.localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+    }, [searchHistory]);
 
 
     return (
@@ -102,13 +159,6 @@ function SearchPage({ menu }) {
 
                     </div>
 
-                    {/* 검색 수량 // 취소버튼 */}
-                    {/* <div className='text-secondary fw-mefium d-flex justify-content-between bg-white border-bottom'>
-                        <div className='p-2 ps-3'>
-                            검색 결과 : {searchResults.length}개
-                        </div>
-                        <div className='p-2 pe-3' onClick={() => navigate(-1)}>닫기</div>
-                    </div> */}
                 </header>
 
                 {/* 최근검색항목 */}
@@ -116,39 +166,33 @@ function SearchPage({ menu }) {
                     <>
                         <div className="d-flex justify-content-between align-items-center p-2 pt-0 bg-white shadow-sm">
                             <div className="fw-semibold ps-2">최근 검색</div>
-                            <div className="text-secondary" style={{ fontSize: '0.9rem' }}>
-                                <span className="pe-2">전체삭제</span>
-                                <span className="ps-2 border-start">자동저장 끄기</span>
+                            <div className="text-secondary d-flex me-1" style={{ fontSize: '0.9rem' }}>
+
+                                {offHistory && <div className="pe-2 border-end" onClick={clearAll}>전체삭제</div>}
+
+                                <Form.Check 
+                                    className="ps-2"
+                                    onClick={onOffClick}
+                                    type="switch"
+                                    id="custom-switch"
+                                    label="자동저장"
+                                    reverse
+                                    checked={offHistory}
+                                />
                             </div>
                         </div>
 
                         <div className="d-flex fs-6 p-2 pt-3 gap-2">
-                            <div className="d-flex align-items-center p-2 ps-3 border rounded-pill bg-white shadow-sm">
-                                <div>
-                                    하하
+                            {searchHistory.map((itemName, idx) =>
+                                <div className="d-flex align-items-center p-2 ps-3 border rounded-pill bg-white shadow-sm">
+                                    <div onClick={() => historyClick(itemName)}>
+                                        {itemName}
+                                    </div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-x ms-1 text-secondary" viewBox="0 0 16 16" onClick={() => remove(idx)}>
+                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                    </svg>
                                 </div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-x ms-1 text-secondary" viewBox="0 0 16 16">
-                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-                                </svg>
-                            </div>
-
-                            <div className="d-flex align-items-center p-2 ps-3 border rounded-pill bg-white shadow-sm">
-                                <div>
-                                    피자
-                                </div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-x ms-1 text-secondary" viewBox="0 0 16 16">
-                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-                                </svg>
-                            </div>
-
-                            <div className="d-flex align-items-center p-2 ps-3 border rounded-pill bg-white shadow-sm">
-                                <div>
-                                    오리고기
-                                </div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-x ms-1 text-secondary" viewBox="0 0 16 16">
-                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-                                </svg>
-                            </div>
+                            )}
                         </div>
                     </>
                 }
@@ -165,7 +209,7 @@ function SearchPage({ menu }) {
 
                             {/* 검색결과 리스트*/}
                             <div className='bg-white shadow-sm'>
-                                {searchResults.map(item => <ItemList item={item} replace={true} />)}
+                                {searchResults.map(item => <ItemList item={item} replace={true} parentOnClick={itemClick} />)}
                                 {/* {searchResults.map((item) => <SearchList item={item} replace={true} />)} */}
                             </div>
 
