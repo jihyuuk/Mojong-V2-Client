@@ -161,17 +161,15 @@ function SearchPage({ menu }) {
                     <>
                         <div className="d-flex justify-content-between align-items-center p-2 pt-0 bg-white shadow-sm">
                             <div className="fw-semibold ps-2">최근 검색</div>
-                            <div className="text-secondary d-flex me-1" style={{ fontSize: '0.9rem' }}>
+                            <div className="text-secondary d-flex align-items-center me-1" style={{ fontSize: '0.9rem' }}>
 
                                 {!isHistoryDisabled && <div className="pe-2 border-end" onClick={clearAll}>전체삭제</div>}
 
+                                <div className="px-2">자동저장</div>
                                 <Form.Check 
-                                    className="ps-2"
                                     onClick={onOffClick}
                                     type="switch"
                                     id="custom-switch"
-                                    label="자동저장"
-                                    reverse
                                     checked={!isHistoryDisabled}
                                 />
                             </div>
