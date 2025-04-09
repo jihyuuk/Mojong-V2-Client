@@ -37,41 +37,14 @@ function DetailPage() {
         if (!item) return;
 
         //수량 초과 검증하기
-        if (quantity > item.stock) {
-            setQuantity(item.stock);
-            showTost("재고가 부족합니다. (재고:" + item.stock + "개)")
-            return;
-        }
+        // if (quantity > item.stock) {
+        //     setQuantity(item.stock);
+        //     showTost("재고가 부족합니다. (재고:" + item.stock + "개)")
+        //     return;
+        // }
 
         setTotal(item.price * quantity);
     }, [quantity])
-
-
-    //마이너스 버튼 클릭
-    const clickMinus = () => {
-        if (quantity > 0) {
-            setQuantity(quantity - 1);
-        }
-    }
-
-    //플러스 버튼 클릭
-    const clickPlus = () => {
-        if (quantity < maxQuantity) {
-            setQuantity(quantity + 1);
-        }
-    }
-
-    //수량 직접 입력
-    const handleKeyDown = (e) => {
-        if (e.key === 'Backspace') {
-            setQuantity(parseInt(quantity / 10));
-        } else {
-            const cal = quantity * 10 + parseInt(e.key);
-            if (cal <= maxQuantity) {
-                setQuantity(cal)
-            }
-        }
-    };
 
     const addCart = () => {
         setCartItems(prevItems => {
@@ -101,8 +74,33 @@ function DetailPage() {
         ['7', '8', '9'],
         ['C', '0', '⌫']
     ];
-
     const plusValue = [5, 10, 50, 72];
+
+    const keyClicked = (value) => {
+        //C버튼
+        if(value === 'C'){
+            setQuantity(0);
+            return;
+        }
+        //지우기 버튼
+        if(value === '⌫'){
+            setQuantity(Math.floor(quantity/10));
+            return;
+        }
+
+        //숫자일때
+        if(quantity > 999999){
+            showTost("장난 치지 마시오!");
+            return
+        }
+        setQuantity(quantity*10 + Number(value));
+    }
+    const plusButtonClick = (value) => {
+        setQuantity(quantity+Number(value));
+    }
+
+
+
 
     //상품 클릭 없이 직접 /detail로 접근시 리다이렉트
     useEffect(() => {
@@ -163,22 +161,34 @@ function DetailPage() {
                     <div>
                         <div className='d-flex gap-2 text-center fw-semibold text-success px-2 mb-1'>
                             {plusValue.map((value, index) =>
-                                <div key={index} className='w-100 bg-success-subtle rounded-3 py-1'>
+                                <div 
+                                key={index} 
+                                onClick={()=>plusButtonClick(value)}
+                                className='w-100 rounded-3 py-1 bg-success-subtle'
+                                onTouchStart={(e) => {
+                                    e.currentTarget.classList.remove('bg-success-subtle');
+                                    e.currentTarget.classList.add('bg-secondary-subtle', 'text-secondary');
+                                  }}
+                                  onTouchEnd={(e) => {
+                                    e.currentTarget.classList.remove('bg-secondary-subtle', 'text-secondary');
+                                    e.currentTarget.classList.add('bg-success-subtle');
+                                  }}
+                                >
                                     +{value}
                                 </div>
                             )}
                         </div>
 
-                        {numberPad.map((row, index) =>
-                            <div key={"row" + index} className='d-flex text-center fw-semibold fs-4'>
-                                {row.map((number, index) =>
+                        {numberPad.map((row, rowIdx) =>
+                            <div key={"row" + rowIdx} className='d-flex text-center fw-semibold fs-4'>
+                                {row.map((number, colIdx) =>
                                     <div
-                                        key={"num" + index}
+                                        key={"num" + colIdx}
                                         className='w-100 py-3 rounded-4'
+                                        onClick={()=>keyClicked(number)}
                                         style={{ userSelect: 'none', WebkitUserSelect: 'none' }} //텍스트 복사 막기 
                                         onTouchStart={(e) => e.currentTarget.classList.add('bg-secondary-subtle', 'text-secondary')}
                                         onTouchEnd={(e) => e.currentTarget.classList.remove('bg-secondary-subtle', 'text-secondary')}
-                                        onTouchCancel={(e) => e.currentTarget.classList.remove('bg-secondary-subtle', 'text-secondary')}
                                     >
                                         {number}
                                     </div>
