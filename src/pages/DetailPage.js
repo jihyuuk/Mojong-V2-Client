@@ -3,7 +3,6 @@ import { useTost } from '../utils/TostProvider';
 import SubHeader from '../components/SubHeader';
 import { useLocation, useNavigate } from 'react-router-dom';
 import MotionPage from '../motions/MotionPage';
-import Footer from '../components/Footer';
 import { useShoppingCart } from '../utils/ShoppingCartProvider';
 import { Button } from 'react-bootstrap';
 
@@ -19,7 +18,7 @@ function DetailPage() {
     //토스트
     const { showTost } = useTost();
     //장바구니
-    const { setCartItems } = useShoppingCart();
+    const { cartItems, setCartItems } = useShoppingCart();
 
     //수량
     const [quantity, setQuantity] = useState(0);
@@ -35,36 +34,36 @@ function DetailPage() {
     //수량 변화시 금액 변경
     useEffect(() => {
         if (!item) return;
-
-        //수량 초과 검증하기
-        // if (quantity > item.stock) {
-        //     setQuantity(item.stock);
-        //     showTost("재고가 부족합니다. (재고:" + item.stock + "개)")
-        //     return;
-        // }
-
         setTotal(item.price * quantity);
     }, [quantity])
 
     const addCart = () => {
-        setCartItems(prevItems => {
-            // 이미 장바구니에 같은 상품이 있는지 확인
-            const existingItemIndex = prevItems.findIndex(preItem => preItem.id === item.id);
+        // 기존 장바구니에서 현재 상품 있는지 확인
+        const existingItemIndex = cartItems.findIndex(preItem => preItem.id === item.id);
+        const existingQuantity = existingItemIndex !== -1 ? cartItems[existingItemIndex].quantity : 0;
+        const totalQuantity = existingQuantity + quantity;
 
-            // 이미 있는 상품이면 수량만 증가
+        // 재고 초과 검증
+        if (totalQuantity > item.stock) {
+            const cartText = existingQuantity > 0 ? `, 장바구니: ${existingQuantity}개` : '';
+            showTost(`재고가 부족합니다. (재고: ${item.stock}개${cartText})`);
+            return;
+        }
+
+        // 장바구니 업데이트
+        setCartItems(prevItems => {
             if (existingItemIndex !== -1) {
                 return prevItems.map((item, idx) =>
                     idx === existingItemIndex
-                        ? { ...item, quantity: Math.min(item.quantity + quantity, maxQuantity) } //최대 3자리 초과 막기
+                        ? { ...item, quantity: Math.min(totalQuantity, maxQuantity) }
                         : item
                 );
             }
-
-            // 없는 상품이면 새로 추가
-            return [...prevItems, { ...item, quantity: quantity }];
+            return [...prevItems, { ...item, quantity }];
         });
+
         showTost("장바구니 추가 완료");
-        navigate(-1); // 상세페이지 닫기
+        navigate(-1);
     };
 
     //넘버패드===========================================
@@ -78,25 +77,25 @@ function DetailPage() {
 
     const keyClicked = (value) => {
         //C버튼
-        if(value === 'C'){
+        if (value === 'C') {
             setQuantity(0);
             return;
         }
         //지우기 버튼
-        if(value === '⌫'){
-            setQuantity(Math.floor(quantity/10));
+        if (value === '⌫') {
+            setQuantity(Math.floor(quantity / 10));
             return;
         }
 
         //숫자일때
-        if(quantity > 999999){
+        if (quantity > 999999) {
             showTost("장난 치지 마시오!");
             return
         }
-        setQuantity(quantity*10 + Number(value));
+        setQuantity(quantity * 10 + Number(value));
     }
     const plusButtonClick = (value) => {
-        setQuantity(quantity+Number(value));
+        setQuantity(quantity + Number(value));
     }
 
 
@@ -161,18 +160,18 @@ function DetailPage() {
                     <div>
                         <div className='d-flex gap-2 text-center fw-semibold text-success px-2 mb-1'>
                             {plusValue.map((value, index) =>
-                                <div 
-                                key={index} 
-                                onClick={()=>plusButtonClick(value)}
-                                className='w-100 rounded-3 py-1 bg-success-subtle'
-                                onTouchStart={(e) => {
-                                    e.currentTarget.classList.remove('bg-success-subtle');
-                                    e.currentTarget.classList.add('bg-secondary-subtle', 'text-secondary');
-                                  }}
-                                  onTouchEnd={(e) => {
-                                    e.currentTarget.classList.remove('bg-secondary-subtle', 'text-secondary');
-                                    e.currentTarget.classList.add('bg-success-subtle');
-                                  }}
+                                <div
+                                    key={index}
+                                    onClick={() => plusButtonClick(value)}
+                                    className='w-100 rounded-3 py-1 bg-success-subtle'
+                                    onTouchStart={(e) => {
+                                        e.currentTarget.classList.remove('bg-success-subtle');
+                                        e.currentTarget.classList.add('bg-secondary-subtle', 'text-secondary');
+                                    }}
+                                    onTouchEnd={(e) => {
+                                        e.currentTarget.classList.remove('bg-secondary-subtle', 'text-secondary');
+                                        e.currentTarget.classList.add('bg-success-subtle');
+                                    }}
                                 >
                                     +{value}
                                 </div>
@@ -185,7 +184,7 @@ function DetailPage() {
                                     <div
                                         key={"num" + colIdx}
                                         className='w-100 py-3 rounded-4'
-                                        onClick={()=>keyClicked(number)}
+                                        onClick={() => keyClicked(number)}
                                         style={{ userSelect: 'none', WebkitUserSelect: 'none' }} //텍스트 복사 막기 
                                         onTouchStart={(e) => e.currentTarget.classList.add('bg-secondary-subtle', 'text-secondary')}
                                         onTouchEnd={(e) => e.currentTarget.classList.remove('bg-secondary-subtle', 'text-secondary')}
@@ -200,7 +199,7 @@ function DetailPage() {
 
                     {/* 장바구니 담기 버튼 */}
                     <div className="p-2 py-3">
-                        <Button variant="success" disabled={total <= 0} className="w-100 fs-5 fw-semibold p-2 rounded-3" >
+                        <Button variant="success" disabled={total <= 0} className="w-100 fs-5 fw-semibold p-2 rounded-3" onClick={addCart}>
                             {total > 0 ? `${total.toLocaleString('ko-KR')}원 담기` : '수량을 입력해주세요'}
                         </Button>
                     </div>
